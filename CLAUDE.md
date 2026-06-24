@@ -28,6 +28,17 @@
 - 기계적 반복(예: git 저장)은 함수나 slash 명령어로, 판단이 필요한 작업은 스킬로 만든다.
 - 새 자동화를 만들 땐 "클로드가 생각해야 하나?"를 먼저 묻는다. 아니면 단순 스크립트로.
 
+## 연결된 폴더 (코워크 마운트)
+
+| 경로 | 용도 |
+| ---- | ---- |
+| `C:\Users\eastp\DM_Secretary\` | 설정·스크립트·비서 자산 (이 파일이 있는 곳) |
+| `C:\Users\eastp\iCloudDrive\Dongmin\` | Obsidian vault (PARA 구조) — 회의록·이슈·데일리·리소스 |
+
+- 회의록·이슈 저장 경로: `Dongmin\20_Projects\SK하이닉스_용인\회의록\` / `이슈\`
+- 파일명 형식: `YYMMDD_phase_building_키워드.md`
+- 스킬(meeting-notes, issue-register)은 Dongmin vault로 자동 저장되도록 설정돼 있음.
+
 ## 행동 규칙 (실제 마찰에서 추가)
 
 > 이 섹션은 처음부터 다 채우지 않는다. 작업하다가 클로드가 반복적으로 하는

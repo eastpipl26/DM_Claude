@@ -1,0 +1,2 @@
+[2026-06-24] 텔레그램 봇 실행 실패: 샌드박스 프록시가 api.telegram.org를 차단 (403 Forbidden, blocked-by-allowlist). 
+원인: Cowork 샌드박스는 외부 API 직접 호출이 불가. Telegram API 호출에는 별도 환경(로컬 스크립트, Cloudflare Worker, VPS 등) 필요.
