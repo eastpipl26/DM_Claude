@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(Get-Item \\(Get-Command python.exe\\).Source)",
+      "Bash(*)",
+      "PowerShell(*)",
+      "Read(*)",
+      "Write(*)",
+      "Edit(*)",
+      "Glob(*)",
+      "Grep(*)",
+      "WebFetch(*)",
+      "WebSearch(*)",
+      "TodoWrite(*)",
+      "mcp__claude_ai_Google_Drive__*"
+    ],
+    "defaultMode": "acceptEdits"
+  },
+  "theme": "dark"
+}

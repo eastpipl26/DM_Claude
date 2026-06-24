@@ -1,0 +1,17 @@
+backups/
+cache/
+daemon/
+daemon.lock
+daemon.status.json
+projects/
+jobs/
+statsig/
+todos/
+sessions/
+file-history/
+history.jsonl
+plugins/
+mcp-needs-auth-cache.json
+.credentials.json
+*.log
+logs/
