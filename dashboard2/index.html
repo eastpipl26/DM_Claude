@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>말숙이 팀 운영 대시보드</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+/* ── Claude 디자인 시스템 토큰 ── */
+:root {
+  /* 색상 — Claude 팔레트 */
+  --color-canvas:#faf9f5;
+  --color-surface-soft:#f5f0e8;
+  --color-surface-card:#efe9de;
+  --color-surface-cream-strong:#e8e0d2;
+  --color-surface-dark:#181715;
+  --color-surface-dark-elevated:#252320;
+  --color-surface-dark-soft:#1f1e1b;
+  --color-primary:#cc785c;
+  --color-primary-active:#a9583e;
+  --color-primary-disabled:#e6dfd8;
+  --color-ink:#141413;
+  --color-body:#3d3d3a;
+  --color-body-strong:#252523;
+  --color-muted:#6c6a64;
+  --color-muted-soft:#8e8b82;
+  --color-hairline:#e6dfd8;
+  --color-hairline-soft:#ebe6df;
+  --color-on-primary:#ffffff;
+  --color-on-dark:#faf9f5;
+  --color-on-dark-soft:#a09d96;
+  --color-accent-teal:#5db8a6;
+  --color-accent-amber:#e8a55a;
+  --color-success:#5db872;
+  --color-warning:#d4a017;
+  --color-error:#c64545;
+
+  /* 타이포그래피 */
+  --font-display:"Cormorant Garamond","Times New Roman",serif;
+  --font-body:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --font-mono:"JetBrains Mono",ui-monospace,monospace;
+
+  /* 보더 반경 */
+  --radius-xs:4px;
+  --radius-sm:6px;
+  --radius-md:8px;
+  --radius-lg:12px;
+  --radius-xl:16px;
+  --radius-pill:9999px;
+
+  /* 간격 */
+  --space-xxs:4px;
+  --space-xs:8px;
+  --space-sm:12px;
+  --space-md:16px;
+  --space-lg:24px;
+  --space-xl:32px;
+  --space-xxl:48px;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+
+body{
+  background:var(--color-canvas);
+  color:var(--color-ink);
+  font-family:var(--font-body);
+  font-size:14px;
+  line-height:1.55;
+  height:100vh;
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+}
+
+/* ── 상단 헤더 (top-nav) ── */
+.topbar{
+  background:var(--color-canvas);
+  border-bottom:1px solid var(--color-hairline);
+  padding:0 20px;
+  display:flex;
+  align-items:center;
+  gap:16px;
+  height:48px;
+  flex-shrink:0;
+}
+.topbar-title{
+  font-size:15px;
+  font-weight:500;
+  letter-spacing:-.3px;
+  color:var(--color-ink);
+  font-family:var(--font-body);
+}
+.topbar-subtitle{color:var(--color-muted);font-size:12px}
+.topbar-status{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  margin-left:auto;
+  font-size:12px;
+  color:var(--color-muted);
+}
+.dot{
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:var(--color-success);
+  animation:pulse 2s infinite;
+}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+
+/* ── 한도 게이지 ── */
+.limit-bar-wrap{
+  background:var(--color-surface-soft);
+  border-bottom:1px solid var(--color-hairline);
+  padding:8px 20px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  flex-shrink:0;
+}
+.limit-label{font-size:12px;color:var(--color-muted);white-space:nowrap;font-weight:500}
+.limit-bar{
+  flex:1;
+  height:4px;
+  background:var(--color-surface-cream-strong);
+  border-radius:var(--radius-pill);
+  overflow:hidden;
+  max-width:300px;
+}
+.limit-fill{
+  height:100%;
+  background:var(--color-success);
+  border-radius:var(--radius-pill);
+  transition:width .5s,background .5s;
+}
+.limit-fill.warn{background:var(--color-warning)}
+.limit-fill.danger{background:var(--color-error)}
+.limit-value{font-size:12px;color:var(--color-muted);min-width:60px;font-weight:500}
+.limit-reset{font-size:11px;color:var(--color-muted-soft);margin-left:auto}
+
+/* ── 탭 (category-tab) ── */
+.tabs{
+  background:var(--color-canvas);
+  border-bottom:1px solid var(--color-hairline);
+  display:flex;
+  padding:0 20px;
+  flex-shrink:0;
+}
+.tab{
+  padding:8px 14px;
+  font-size:14px;
+  font-weight:500;
+  color:var(--color-muted);
+  cursor:pointer;
+  border-bottom:2px solid transparent;
+  transition:.2s;
+  white-space:nowrap;
+  font-family:var(--font-body);
+  border-radius:var(--radius-md) var(--radius-md) 0 0;
+}
+.tab:hover{color:var(--color-ink)}
+.tab.active{
+  color:var(--color-ink);
+  border-bottom-color:var(--color-primary);
+  background:var(--color-surface-card);
+}
+
+/* ── 콘텐츠 ── */
+.content{flex:1;overflow-y:auto;padding:20px;background:var(--color-canvas)}
+.pane{display:none}
+.pane.active{display:block}
+
+/* ── 메트릭 카드 (feature-card) ── */
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+.metric-card{
+  background:var(--color-surface-card);
+  border:1px solid var(--color-hairline);
+  border-radius:var(--radius-lg);
+  padding:14px 16px;
+  cursor:pointer;
+  transition:.2s;
+}
+.metric-card:hover{border-color:var(--color-primary-disabled);background:var(--color-surface-cream-strong)}
+.metric-card.active-filter{border-color:var(--color-primary)}
+.metric-label{
+  font-size:12px;
+  font-weight:500;
+  color:var(--color-muted);
+  margin-bottom:4px;
+  letter-spacing:.5px;
+  text-transform:uppercase;
+  font-family:var(--font-body);
+}
+.metric-value{font-size:24px;font-weight:400;color:var(--color-ink);font-family:var(--font-display);letter-spacing:-.3px}
+.metric-value.green{color:var(--color-success)}
+.metric-value.blue{color:var(--color-accent-teal)}
+.metric-hint{font-size:11px;color:var(--color-muted-soft);margin-top:4px}
+
+/* ── 직원 그리드 (connector-tile) ── */
+.section-title{
+  font-size:12px;
+  font-weight:500;
+  color:var(--color-muted);
+  text-transform:uppercase;
+  letter-spacing:1.5px;
+  margin-bottom:10px;
+  display:flex;
+  align-items:center;
+  gap:6px;
+  font-family:var(--font-body);
+}
+.agent-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px}
+.agent-card{
+  background:var(--color-canvas);
+  border:1px solid var(--color-hairline);
+  border-left:3px solid var(--color-hairline);
+  border-radius:var(--radius-lg);
+  padding:12px;
+  cursor:pointer;
+  transition:.2s;
+}
+.agent-card:hover{border-color:var(--color-primary-disabled);background:var(--color-surface-soft)}
+.agent-card.working{border-left-color:var(--color-success)}
+.agent-card.standby{border-left-color:var(--color-warning);opacity:.8}
+.agent-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
+.agent-name{font-weight:500;font-size:14px;color:var(--color-ink);font-family:var(--font-body)}
+/* ── 뱃지 (badge-pill / badge-coral) ── */
+.badge{
+  font-size:10px;
+  padding:2px 8px;
+  border-radius:var(--radius-pill);
+  font-weight:500;
+  letter-spacing:.5px;
+  text-transform:uppercase;
+  font-family:var(--font-body);
+}
+.badge.working{background:var(--color-success);color:#fff}
+.badge.idle{background:var(--color-surface-card);color:var(--color-muted)}
+.badge.standby{background:var(--color-accent-amber);color:#fff}
+.agent-desc{font-size:12px;color:var(--color-muted);overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+
+/* ── 스킬 목록 ── */
+.skill-list{display:flex;flex-direction:column;gap:8px;margin-bottom:20px}
+.skill-row{
+  background:var(--color-canvas);
+  border:1px solid var(--color-hairline);
+  border-radius:var(--radius-lg);
+  padding:12px 16px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.skill-name{
+  font-family:var(--font-mono);
+  font-size:13px;
+  color:var(--color-primary);
+  flex:1;
+}
+.skill-desc{font-size:12px;color:var(--color-muted);flex:2;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+/* ── 버튼 (button-secondary) ── */
+.skill-btn{
+  background:var(--color-canvas);
+  border:1px solid var(--color-hairline);
+  color:var(--color-ink);
+  padding:4px 12px;
+  border-radius:var(--radius-md);
+  cursor:pointer;
+  font-size:12px;
+  font-weight:500;
+  font-family:var(--font-body);
+  transition:.2s;
+  height:28px;
+}
+.skill-btn:hover{background:var(--color-surface-soft);border-color:var(--color-primary-disabled)}
+.skill-btn.disabled{opacity:.4;cursor:default}
+.skill-btn.active{background:var(--color-surface-card);border-color:var(--color-primary-disabled);color:var(--color-ink)}
+
+/* ── 명령 입력 ── */
+.cmd-section{
+  background:var(--color-surface-card);
+  border:1px solid var(--color-hairline);
+  border-radius:var(--radius-lg);
+  padding:16px;
+  margin-bottom:20px;
+}
+.cmd-label{font-size:12px;color:var(--color-muted);margin-bottom:8px;font-weight:500;letter-spacing:.5px;text-transform:uppercase}
+.cmd-input-row{display:flex;gap:8px}
+/* text-input */
+.cmd-input{
+  flex:1;
+  background:var(--color-canvas);
+  border:1px solid var(--color-hairline);
+  color:var(--color-ink);
+  padding:10px 14px;
+  border-radius:var(--radius-md);
+  font-size:14px;
+  font-family:var(--font-body);
+  outline:none;
+  height:40px;
+}
+.cmd-input:focus{border-color:var(--color-primary);box-shadow:0 0 0 3px rgba(204,120,92,.12)}
+/* button-primary */
+.cmd-send{
+  background:var(--color-primary);
+  border:none;
+  color:var(--color-on-primary);
+  padding:0 20px;
+  border-radius:var(--radius-md);
+  cursor:pointer;
+  font-size:14px;
+  font-weight:500;
+  font-family:var(--font-body);
+  white-space:nowrap;
+  height:40px;
+  transition:.2s;
+}
+.cmd-send:hover{background:var(--color-primary-active)}
+/* code-window-card */
+.cmd-output{
+  margin-top:12px;
+  background:var(--color-surface-dark);
+  border:1px solid var(--color-hairline);
+  border-radius:var(--radius-lg);
+  padding:16px;
+  font-family:var(--font-mono);
+  font-size:13px;
+  color:var(--color-on-dark-soft);
+  max-height:200px;
+  overflow-y:auto;
+  display:none;
+  white-space:pre-wrap;
+  line-height:1.6;
+}
+
+/* ── 로그 ── */
+.log-list{display:flex;flex-direction:column;gap:6px}
+.log-item{
+  display:flex;
+  gap:10px;
+  padding:8px 12px;
+  background:var(--color-canvas);
+  border-radius:var(--radius-md);
+  border:1px solid var(--color-hairline);
+}
+.log-time{color:var(--color-muted-soft);font-family:var(--font-mono);font-size:12px;white-space:nowrap}
+.log-msg{font-size:13px;color:var(--color-body)}
+
+/* ── 스케줄 ── */
+.sched-list{display:flex;flex-direction:column;gap:8px}
+.sched-row{
+  background:var(--color-canvas);
+  border:1px solid var(--color-hairline);
+  border-radius:var(--radius-lg);
+  padding:12px 16px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.sched-name{font-size:13px;flex:1;color:var(--color-body);font-weight:500}
+.sched-time{font-size:12px;color:var(--color-accent-teal);font-family:var(--font-mono)}
+.sched-state{
+  font-size:11px;
+  padding:2px 10px;
+  border-radius:var(--radius-pill);
+  background:var(--color-success);
+  color:#fff;
+  font-weight:500;
+  letter-spacing:.5px;
+  text-transform:uppercase;
+}
+
+/* ── 상세 패널 (product-mockup-card-dark) ── */
+.detail-overlay{display:none;position:fixed;inset:0;background:rgba(20,20,19,.4);z-index:100}
+.detail-panel{
+  position:fixed;
+  right:0;
+  top:0;
+  bottom:0;
+  width:360px;
+  background:var(--color-surface-dark);
+  border-left:1px solid var(--color-hairline);
+  padding:24px;
+  overflow-y:auto;
+  z-index:101;
+}
+.detail-close{
+  position:absolute;
+  top:16px;
+  right:16px;
+  background:var(--color-surface-dark-elevated);
+  border:1px solid rgba(250,249,245,.12);
+  color:var(--color-on-dark-soft);
+  font-size:16px;
+  cursor:pointer;
+  width:32px;
+  height:32px;
+  border-radius:var(--radius-full,50%);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.detail-name{
+  font-size:22px;
+  font-weight:400;
+  font-family:var(--font-display);
+  color:var(--color-on-dark);
+  margin-bottom:4px;
+  letter-spacing:-.3px;
+}
+.detail-rank{font-size:13px;color:var(--color-on-dark-soft);margin-bottom:16px;font-weight:500}
+.detail-section{margin-top:16px}
+.detail-section h4{
+  font-size:11px;
+  text-transform:uppercase;
+  letter-spacing:1.5px;
+  color:var(--color-on-dark-soft);
+  margin-bottom:8px;
+  font-weight:500;
+  font-family:var(--font-body);
+}
+.detail-desc{font-size:13px;color:var(--color-on-dark-soft);line-height:1.7}
+
+/* ── 일정 탭 플레이스홀더 ── */
+.cal-placeholder{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  height:300px;
+  color:var(--color-muted);
+  gap:12px;
+}
+.cal-placeholder .icon{font-size:48px;opacity:.3}
+
+/* ── 커맨드 팔레트 ── */
+.palette-overlay{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(20,20,19,.5);
+  z-index:200;
+  align-items:flex-start;
+  justify-content:center;
+  padding-top:15vh;
+}
+.palette-overlay.open{display:flex}
+.palette-box{
+  background:var(--color-canvas);
+  border:1px solid var(--color-hairline);
+  border-radius:var(--radius-lg);
+  width:520px;
+  overflow:hidden;
+  box-shadow:0 8px 32px rgba(20,20,19,.12);
+}
+.palette-input{
+  width:100%;
+  background:transparent;
+  border:none;
+  border-bottom:1px solid var(--color-hairline);
+  color:var(--color-ink);
+  padding:14px 16px;
+  font-size:15px;
+  font-family:var(--font-body);
+  outline:none;
+}
+.palette-results{max-height:300px;overflow-y:auto}
+.palette-item{
+  padding:10px 16px;
+  cursor:pointer;
+  display:flex;
+  gap:10px;
+  align-items:center;
+}
+.palette-item:hover{background:var(--color-surface-soft)}
+.palette-item-icon{
+  width:28px;
+  height:28px;
+  border-radius:var(--radius-md);
+  background:var(--color-surface-card);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:13px;
+  flex-shrink:0;
+}
+.palette-item-name{font-size:13px;color:var(--color-ink);font-weight:500}
+.palette-item-hint{font-size:12px;color:var(--color-muted-soft);margin-left:auto}
+.palette-footer{
+  padding:8px 16px;
+  font-size:11px;
+  color:var(--color-muted-soft);
+  border-top:1px solid var(--color-hairline-soft);
+  background:var(--color-surface-soft);
+}
+
+/* ── 반응형 ── */
+@media(max-width:800px){.agent-grid{grid-template-columns:repeat(2,1fr)}.metrics{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:500px){.agent-grid{grid-template-columns:1fr}.metrics{grid-template-columns:1fr}}
+
+/* ── 스크롤바 ── */
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:var(--color-surface-soft)}
+::-webkit-scrollbar-thumb{background:var(--color-surface-cream-strong);border-radius:3px}
+</style>
+</head>
+<body>
+
+<!-- 상단 헤더 -->
+<div class="topbar">
+  <div>
+    <div class="topbar-title">🏢 말숙이 팀 운영 현황</div>
+  </div>
+  <div class="topbar-subtitle" id="last-updated">—</div>
+  <div class="topbar-status">
+    <span class="dot" id="conn-dot" style="background:var(--amber)"></span>
+    <span id="conn-label">연결 중…</span>
+  </div>
+  <div style="margin-left:12px;color:var(--text2);font-size:12px">⌘K</div>
+</div>
+
+<!-- 한도 게이지 -->
+<div class="limit-bar-wrap">
+  <span class="limit-label">주간 에이전트 사용량</span>
+  <div class="limit-bar"><div class="limit-fill" id="limit-fill" style="width:0%"></div></div>
+  <span class="limit-value" id="limit-value">0 / 100</span>
+  <span class="limit-reset" id="limit-reset">리셋: 매주 월 05:00</span>
+</div>
+
+<!-- 탭 -->
+<div class="tabs">
+  <div class="tab active" data-tab="overview">개요</div>
+  <div class="tab" data-tab="agents">직원</div>
+  <div class="tab" data-tab="orgchart">조직도</div>
+  <div class="tab" data-tab="skills">스킬·명령</div>
+  <div class="tab" data-tab="schedule">일정</div>
+  <div class="tab" data-tab="log">로그</div>
+  <div class="tab" data-tab="cost">비용</div>
+</div>
+
+<!-- 콘텐츠 -->
+<div class="content">
+
+  <!-- 개요 탭 -->
+  <div class="pane active" id="pane-overview">
+    <div class="metrics">
+      <div class="metric-card" onclick="filterLog('working')">
+        <div class="metric-label">작업 중</div>
+        <div class="metric-value green" id="m-working">0</div>
+        <div class="metric-hint">현재 실행 중인 에이전트</div>
+      </div>
+      <div class="metric-card" onclick="switchTab('agents')">
+        <div class="metric-label">대기 중</div>
+        <div class="metric-value" id="m-idle">0</div>
+        <div class="metric-hint">idle 상태 직원</div>
+      </div>
+      <div class="metric-card" onclick="switchTab('schedule')">
+        <div class="metric-label">예약 작업</div>
+        <div class="metric-value blue" id="m-sched">0</div>
+        <div class="metric-hint">스케줄 등록 수</div>
+      </div>
+      <div class="metric-card" onclick="filterLog('today')">
+        <div class="metric-label">오늘 처리</div>
+        <div class="metric-value" id="m-today">0</div>
+        <div class="metric-hint">오늘 실행된 작업</div>
+      </div>
+    </div>
+
+    <div class="section-title">직원 현황</div>
+    <div class="agent-grid" id="overview-agent-grid">
+      <div style="color:var(--text3);font-size:13px">로딩 중…</div>
+    </div>
+
+    <div class="section-title">다음 예약 작업</div>
+    <div class="sched-list" id="overview-sched"></div>
+  </div>
+
+  <!-- 조직도 탭 -->
+  <div class="pane" id="pane-orgchart">
+    <div class="section-title" style="margin-bottom:16px">조직도 — 말숙이 팀</div>
+    <div style="overflow-x:auto;overflow-y:visible">
+      <svg id="org-svg" viewBox="0 0 960 480" xmlns="http://www.w3.org/2000/svg" style="width:100%;min-width:760px;font-family:'Inter',-apple-system,sans-serif">
+        <defs>
+          <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L8,3 z" fill="#5db8a6"/>
+          </marker>
+          <marker id="arr-solid" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L8,3 z" fill="#8e8b82"/>
+          </marker>
+        </defs>
+
+        <!--
+          레이아웃 기준 (center x):
+          말숙이: 480
+          직속 8명 (문이110, 강이230, 재이340, 새벽이450, 옥순이555, 탐이660, 채린이770, 선우880 — 선우는 대기발령)
+          블로그팀(문이 하위): 캐순이30, 물색이88, 손질이146, 묘이204
+        -->
+
+        <!-- 도요 → 말숙이 -->
+        <line x1="480" y1="52" x2="480" y2="88" stroke="#8e8b82" stroke-width="1.5" marker-end="url(#arr-solid)"/>
+
+        <!-- 말숙이 → 수평 백본 -->
+        <line x1="480" y1="140" x2="480" y2="168" stroke="#8e8b82" stroke-width="1.5"/>
+        <line x1="110" y1="168" x2="770" y2="168" stroke="#8e8b82" stroke-width="1.5"/>
+
+        <!-- 백본 → 각 직원 수직 -->
+        <line x1="110" y1="168" x2="110" y2="196" stroke="#8e8b82" stroke-width="1.5" marker-end="url(#arr-solid)"/>
+        <line x1="230" y1="168" x2="230" y2="196" stroke="#8e8b82" stroke-width="1.5" marker-end="url(#arr-solid)"/>
+        <line x1="340" y1="168" x2="340" y2="196" stroke="#8e8b82" stroke-width="1.5" marker-end="url(#arr-solid)"/>
+        <line x1="450" y1="168" x2="450" y2="196" stroke="#8e8b82" stroke-width="1.5" marker-end="url(#arr-solid)"/>
+        <line x1="555" y1="168" x2="555" y2="196" stroke="#8e8b82" stroke-width="1.5" marker-end="url(#arr-solid)"/>
+        <line x1="660" y1="168" x2="660" y2="196" stroke="#8e8b82" stroke-width="1.5" marker-end="url(#arr-solid)"/>
+        <line x1="770" y1="168" x2="770" y2="196" stroke="#8e8b82" stroke-width="1.5" marker-end="url(#arr-solid)"/>
+
+        <!-- 선우 (대기발령) — 백본 밖, 점선으로 연결 -->
+        <line x1="770" y1="168" x2="880" y2="168" stroke="#8e8b82" stroke-width="1" stroke-dasharray="4,3"/>
+        <line x1="880" y1="168" x2="880" y2="196" stroke="#8e8b82" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr-solid)"/>
+
+        <!-- 문이 → 블로그팀 분기 -->
+        <line x1="110" y1="244" x2="110" y2="264" stroke="#8e8b82" stroke-width="1.2"/>
+        <line x1="30"  y1="264" x2="204" y2="264" stroke="#8e8b82" stroke-width="1.2"/>
+        <line x1="30"  y1="264" x2="30"  y2="292" stroke="#8e8b82" stroke-width="1.2" marker-end="url(#arr-solid)"/>
+        <line x1="88"  y1="264" x2="88"  y2="292" stroke="#8e8b82" stroke-width="1.2" marker-end="url(#arr-solid)"/>
+        <line x1="146" y1="264" x2="146" y2="292" stroke="#8e8b82" stroke-width="1.2" marker-end="url(#arr-solid)"/>
+        <line x1="204" y1="264" x2="204" y2="292" stroke="#8e8b82" stroke-width="1.2" marker-end="url(#arr-solid)"/>
+
+        <!-- 협력선: 탐이(660,220) ↔ 묘이(204,314) -->
+        <line x1="640" y1="220" x2="224" y2="320" stroke="#5db8a6" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#arr)"/>
+        <!-- 협력선: 탐이(660,210) ↔ 문이(170,210) -->
+        <line x1="640" y1="210" x2="160" y2="210" stroke="#5db8a6" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#arr)"/>
+
+        <!-- ══ 노드 ══ -->
+
+        <!-- 도요 -->
+        <g style="cursor:default">
+          <rect x="400" y="10" width="160" height="42" rx="8" fill="#181715"/>
+          <text x="480" y="28" text-anchor="middle" fill="#faf9f5" font-size="13" font-weight="600">도요 (서동민)</text>
+          <text x="480" y="46" text-anchor="middle" fill="#a09d96" font-size="10">오너</text>
+        </g>
+
+        <!-- 말숙이 [비서실장] -->
+        <g onclick="orgOpenDetail('malsook')" style="cursor:pointer">
+          <rect x="400" y="88" width="160" height="52" rx="8" fill="#cc785c"/>
+          <text x="480" y="109" text-anchor="middle" fill="#fff" font-size="13" font-weight="600">말숙이</text>
+          <text x="480" y="127" text-anchor="middle" fill="rgba(255,255,255,.8)" font-size="10">비서실장</text>
+        </g>
+
+        <!-- 문이 [과장] cx=110 -->
+        <g onclick="orgOpenDetail('mooni')" style="cursor:pointer">
+          <rect x="60" y="196" width="100" height="48" rx="6" fill="#252320"/>
+          <text x="110" y="216" text-anchor="middle" fill="#faf9f5" font-size="12" font-weight="500">문이</text>
+          <text x="110" y="233" text-anchor="middle" fill="#a09d96" font-size="10">과장 · 블로그팀</text>
+        </g>
+
+        <!-- 강이 [과장] cx=230 -->
+        <g onclick="orgOpenDetail('gangi')" style="cursor:pointer">
+          <rect x="180" y="196" width="100" height="48" rx="6" fill="#252320"/>
+          <text x="230" y="216" text-anchor="middle" fill="#faf9f5" font-size="12" font-weight="500">강이</text>
+          <text x="230" y="233" text-anchor="middle" fill="#a09d96" font-size="10">과장 · 유튜브학습</text>
+        </g>
+
+        <!-- 재이 [대리] cx=340 -->
+        <g onclick="orgOpenDetail('jaei')" style="cursor:pointer">
+          <rect x="292" y="196" width="96" height="48" rx="6" fill="#efe9de" stroke="#cc785c" stroke-width="1.5"/>
+          <text x="340" y="216" text-anchor="middle" fill="#141413" font-size="12" font-weight="500">재이</text>
+          <text x="340" y="233" text-anchor="middle" fill="#6c6a64" font-size="10">대리 · 인사</text>
+        </g>
+
+        <!-- 새벽이 [대리] cx=450 -->
+        <g onclick="orgOpenDetail('saebyuki')" style="cursor:pointer">
+          <rect x="402" y="196" width="96" height="48" rx="6" fill="#efe9de" stroke="#cc785c" stroke-width="1.5"/>
+          <text x="450" y="216" text-anchor="middle" fill="#141413" font-size="12" font-weight="500">새벽이</text>
+          <text x="450" y="233" text-anchor="middle" fill="#6c6a64" font-size="10">대리 · 브리핑</text>
+        </g>
+
+        <!-- 옥순이 [대리] cx=555 -->
+        <g onclick="orgOpenDetail('oksuni')" style="cursor:pointer">
+          <rect x="507" y="196" width="96" height="48" rx="6" fill="#efe9de" stroke="#cc785c" stroke-width="1.5"/>
+          <text x="555" y="216" text-anchor="middle" fill="#141413" font-size="12" font-weight="500">옥순이</text>
+          <text x="555" y="233" text-anchor="middle" fill="#6c6a64" font-size="10">대리 · vault관리</text>
+        </g>
+
+        <!-- 탐이 [사원] cx=660 -->
+        <g onclick="orgOpenDetail('tami')" style="cursor:pointer">
+          <rect x="612" y="196" width="96" height="48" rx="6" fill="#faf9f5" stroke="#e6dfd8" stroke-width="1"/>
+          <text x="660" y="216" text-anchor="middle" fill="#141413" font-size="12" font-weight="500">탐이</text>
+          <text x="660" y="233" text-anchor="middle" fill="#6c6a64" font-size="10">사원 · 크롤링</text>
+        </g>
+
+        <!-- 채린이 [사원] cx=770 -->
+        <g onclick="orgOpenDetail('chaerin')" style="cursor:pointer">
+          <rect x="722" y="196" width="96" height="48" rx="6" fill="#faf9f5" stroke="#e6dfd8" stroke-width="1"/>
+          <text x="770" y="216" text-anchor="middle" fill="#141413" font-size="12" font-weight="500">채린이</text>
+          <text x="770" y="233" text-anchor="middle" fill="#6c6a64" font-size="10">사원 · 디자인</text>
+        </g>
+
+        <!-- 선우 [대기발령] cx=880 -->
+        <g onclick="orgOpenDetail('sunwoo')" style="cursor:pointer">
+          <rect x="832" y="196" width="96" height="48" rx="6" fill="#f5f0e8" stroke="#8e8b82" stroke-width="1" stroke-dasharray="4,3"/>
+          <text x="880" y="216" text-anchor="middle" fill="#6c6a64" font-size="12" font-weight="500">선우</text>
+          <text x="880" y="233" text-anchor="middle" fill="#8e8b82" font-size="10">대기발령 · TTS</text>
+        </g>
+
+        <!-- 블로그팀 사원 — 캐순이 cx=30 -->
+        <g onclick="orgOpenDetail('kaesuni')" style="cursor:pointer">
+          <rect x="4"  y="292" width="52" height="44" rx="5" fill="#faf9f5" stroke="#e6dfd8" stroke-width="1"/>
+          <text x="30" y="310" text-anchor="middle" fill="#141413" font-size="10" font-weight="500">캐순이</text>
+          <text x="30" y="326" text-anchor="middle" fill="#6c6a64" font-size="9">리서치</text>
+        </g>
+        <!-- 물색이 cx=88 -->
+        <g onclick="orgOpenDetail('mulsaeki')" style="cursor:pointer">
+          <rect x="62" y="292" width="52" height="44" rx="5" fill="#faf9f5" stroke="#e6dfd8" stroke-width="1"/>
+          <text x="88" y="310" text-anchor="middle" fill="#141413" font-size="10" font-weight="500">물색이</text>
+          <text x="88" y="326" text-anchor="middle" fill="#6c6a64" font-size="9">SEO</text>
+        </g>
+        <!-- 손질이 cx=146 -->
+        <g onclick="orgOpenDetail('sonjili')" style="cursor:pointer">
+          <rect x="120" y="292" width="52" height="44" rx="5" fill="#faf9f5" stroke="#e6dfd8" stroke-width="1"/>
+          <text x="146" y="310" text-anchor="middle" fill="#141413" font-size="10" font-weight="500">손질이</text>
+          <text x="146" y="326" text-anchor="middle" fill="#6c6a64" font-size="9">검수</text>
+        </g>
+        <!-- 묘이 cx=204 -->
+        <g onclick="orgOpenDetail('myoi')" style="cursor:pointer">
+          <rect x="178" y="292" width="52" height="44" rx="5" fill="#faf9f5" stroke="#e6dfd8" stroke-width="1"/>
+          <text x="204" y="310" text-anchor="middle" fill="#141413" font-size="10" font-weight="500">묘이</text>
+          <text x="204" y="326" text-anchor="middle" fill="#6c6a64" font-size="9">이미지생성</text>
+        </g>
+
+        <!-- 레전드 -->
+        <line x1="340" y1="400" x2="370" y2="400" stroke="#5db8a6" stroke-width="1.5" stroke-dasharray="5,4" marker-end="url(#arr)"/>
+        <text x="378" y="404" fill="#6c6a64" font-size="10">협력 관계</text>
+        <line x1="450" y1="400" x2="480" y2="400" stroke="#8e8b82" stroke-width="1.5" marker-end="url(#arr-solid)"/>
+        <text x="488" y="404" fill="#6c6a64" font-size="10">직속 보고</text>
+        <line x1="560" y1="400" x2="590" y2="400" stroke="#8e8b82" stroke-width="1" stroke-dasharray="4,3"/>
+        <text x="598" y="404" fill="#6c6a64" font-size="10">대기발령</text>
+      </svg>
+    </div>
+    <div style="margin-top:8px;font-size:11px;color:var(--color-muted-soft);padding-left:4px">노드 클릭 시 직원 상세 패널이 열립니다.</div>
+  </div>
+
+  <!-- 직원 탭 -->
+  <div class="pane" id="pane-agents">
+    <div class="section-title">전체 직원 (12)</div>
+    <div class="agent-grid" id="all-agent-grid"></div>
+  </div>
+
+  <!-- 스킬·명령 탭 -->
+  <div class="pane" id="pane-skills">
+    <div class="cmd-section">
+      <div class="cmd-label">명령어 직접 입력 — 말숙이에게 지시</div>
+      <div class="cmd-input-row">
+        <input class="cmd-input" id="cmd-input" placeholder="예: GitHub에서 claude os 최신 이슈 수집해줘" onkeydown="if(event.key==='Enter')sendCmd()">
+        <button class="cmd-send" onclick="sendCmd()">실행</button>
+      </div>
+      <pre class="cmd-output" id="cmd-output"></pre>
+    </div>
+
+    <div class="section-title">보유 스킬</div>
+    <div class="skill-list" id="skill-list">
+      <div style="color:var(--text3)">로딩 중…</div>
+    </div>
+  </div>
+
+  <!-- 일정 탭 -->
+  <div class="pane" id="pane-schedule">
+    <div style="display:flex;gap:8px;margin-bottom:16px">
+      <button class="skill-btn" onclick="setCalView('day')" id="cal-day">오늘</button>
+      <button class="skill-btn" onclick="setCalView('week')" id="cal-week">주간</button>
+      <button class="skill-btn" onclick="setCalView('month')" id="cal-month">월간</button>
+      <button class="skill-btn" onclick="setCalView('year')" id="cal-year">연간</button>
+    </div>
+    <div id="cal-content">
+      <div class="section-title" style="margin-bottom:12px">Windows 작업 스케줄러</div>
+      <div class="sched-list" id="sched-list"></div>
+      <div class="cal-placeholder" style="margin-top:32px">
+        <div class="icon">📅</div>
+        <div>Google Calendar 연동 예정</div>
+        <div style="font-size:12px;color:var(--text3)">Phase 5에서 Google Calendar API 연동</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 로그 탭 -->
+  <div class="pane" id="pane-log">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+      <input class="cmd-input" id="log-filter" placeholder="필터…" style="max-width:300px" oninput="renderLog()">
+      <span style="font-size:12px;color:var(--text3)" id="log-count"></span>
+    </div>
+    <div class="log-list" id="log-list"></div>
+  </div>
+
+  <!-- 비용 탭 -->
+  <div class="pane" id="pane-cost">
+    <div class="metrics" style="grid-template-columns:repeat(3,1fr)">
+      <div class="metric-card">
+        <div class="metric-label">오늘 에이전트 실행</div>
+        <div class="metric-value" id="c-today">0</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">이번 주 실행</div>
+        <div class="metric-value" id="c-week">0</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">주간 한도 여유</div>
+        <div class="metric-value green" id="c-remain">—</div>
+      </div>
+    </div>
+    <div style="background:var(--bg1);border:1px solid var(--border);border-radius:var(--radius-lg);padding:16px;margin-top:8px">
+      <div class="section-title" style="margin-bottom:8px">서비스 상태</div>
+      <div id="service-status" style="display:flex;flex-direction:column;gap:8px">
+        <div class="sched-row">
+          <span class="sched-name">Firecrawl API</span>
+          <span class="sched-state" id="svc-firecrawl">확인 중</span>
+        </div>
+        <div class="sched-row">
+          <span class="sched-name">Windows 작업 스케줄러</span>
+          <span class="sched-state" id="svc-scheduler">확인 중</span>
+        </div>
+        <div class="sched-row">
+          <span class="sched-name">Claude CLI</span>
+          <span class="sched-state" id="svc-claude">확인 중</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /content -->
+
+<!-- 직원 상세 패널 -->
+<div class="detail-overlay" id="detail-overlay" onclick="closeDetail()"></div>
+<div class="detail-panel" id="detail-panel" style="display:none">
+  <button class="detail-close" onclick="closeDetail()">✕</button>
+  <div class="detail-name" id="dp-name"></div>
+  <div class="detail-rank" id="dp-rank"></div>
+  <div class="detail-section">
+    <h4>역할 설명</h4>
+    <div class="detail-desc" id="dp-desc"></div>
+  </div>
+  <div class="detail-section">
+    <h4>현재 상태</h4>
+    <div id="dp-status"></div>
+  </div>
+</div>
+
+<!-- 커맨드 팔레트 -->
+<div class="palette-overlay" id="palette" onclick="closePalette(event)">
+  <div class="palette-box">
+    <input class="palette-input" id="palette-input" placeholder="명령·스킬·직원 검색…" oninput="filterPalette()" onkeydown="palKey(event)">
+    <div class="palette-results" id="palette-results"></div>
+    <div class="palette-footer">↑↓ 탐색 · Enter 실행 · Esc 닫기</div>
+  </div>
+</div>
+
+<script>
+const API = 'http://localhost:8390/api';
+let catalog = {agents:[], skills:[], schedules:[]};
+let state   = {agents:{}, log:[], usage:{today:0, week:0}};
+let logFilter = '';
+const WEEK_LIMIT = 100;
+
+// 데이터 로드
+async function loadCatalog() {
+  try {
+    const r = await fetch(API + '/catalog');
+    catalog = await r.json();
+    renderAll();
+  } catch(e) { console.error('catalog 로드 실패', e); }
+}
+
+// SSE 연결
+function connectSSE() {
+  const es = new EventSource(API + '/events');
+  es.onopen = () => {
+    document.getElementById('conn-dot').style.background = 'var(--green)';
+    document.getElementById('conn-label').textContent = '실시간 연결됨';
+  };
+  es.onmessage = e => {
+    try {
+      state = JSON.parse(e.data);
+      renderRealtimeData();
+    } catch {}
+  };
+  es.onerror = () => {
+    document.getElementById('conn-dot').style.background = 'var(--red)';
+    document.getElementById('conn-label').textContent = '연결 끊김';
+    setTimeout(connectSSE, 3000);
+  };
+}
+
+// 폴백 폴링 (SSE 실패 시)
+async function pollState() {
+  try {
+    const r = await fetch(API + '/state');
+    if(r.ok) { state = await r.json(); renderRealtimeData(); }
+  } catch {}
+  setTimeout(pollState, 3000);
+}
+
+function getAgentState(id) {
+  return state.agents?.[id] || {status:'idle', task:''};
+}
+
+function renderAll() {
+  renderAgentGrid('overview-agent-grid', true);
+  renderAgentGrid('all-agent-grid', false);
+  renderSkillList();
+  renderSchedList();
+  renderRealtimeData();
+}
+
+function agentStatus(id) {
+  const s = getAgentState(id);
+  return s.status || 'idle';
+}
+
+function renderAgentGrid(containerId, overview) {
+  const el = document.getElementById(containerId);
+  if(!el) return;
+  const agents = overview ? catalog.agents.slice(0,9) : catalog.agents;
+  el.innerHTML = agents.map(a => {
+    const st = agentStatus(a.id);
+    const task = getAgentState(a.id).task || a.description || '';
+    return `<div class="agent-card ${st}" onclick="openDetail('${a.id}')">
+      <div class="agent-header">
+        <span class="agent-name">${a.name}</span>
+        <span class="badge ${st}">${st==='working'?'작업중':st==='standby'?'대기발령':'대기'}</span>
+      </div>
+      <div class="agent-desc">${task || a.rank}</div>
+    </div>`;
+  }).join('');
+}
+
+function renderSkillList() {
+  const el = document.getElementById('skill-list');
+  if(!el) return;
+  el.innerHTML = catalog.skills.map(s => {
+    const isReady = !s.description.includes('예정');
+    return `<div class="skill-row">
+      <span class="skill-name">${s.name}</span>
+      <span class="skill-desc">${s.description}</span>
+      ${isReady
+        ? `<button class="skill-btn" onclick="runSkill('${s.name}')">실행</button>`
+        : `<span class="skill-btn disabled">예정</span>`}
+    </div>`;
+  }).join('');
+}
+
+function renderSchedList() {
+  const el = document.getElementById('sched-list');
+  const oel = document.getElementById('overview-sched');
+  const scheds = catalog.schedules || [];
+  const html = scheds.length ? scheds.map(s => `
+    <div class="sched-row">
+      <span class="sched-name">${s.name}</span>
+      <span class="sched-time">${s.next_run ? s.next_run.replace('T',' ').slice(0,16) : '—'}</span>
+      <span class="sched-state">${s.state}</span>
+    </div>`).join('') : '<div style="color:var(--text3);font-size:13px">등록된 스케줄 없음</div>';
+  if(el) el.innerHTML = html;
+  if(oel) oel.innerHTML = html;
+  document.getElementById('m-sched').textContent = scheds.length;
+}
+
+function renderRealtimeData() {
+  // 메트릭
+  const working = catalog.agents.filter(a => agentStatus(a.id) === 'working').length;
+  const idle    = catalog.agents.filter(a => agentStatus(a.id) === 'idle').length;
+  document.getElementById('m-working').textContent = working;
+  document.getElementById('m-idle').textContent = idle;
+  const today = state.usage?.today || 0;
+  const week  = state.usage?.week  || 0;
+  document.getElementById('m-today').textContent = today;
+  document.getElementById('c-today').textContent = today;
+  document.getElementById('c-week').textContent  = week;
+  // 한도 게이지
+  const pct = Math.min(Math.round(week/WEEK_LIMIT*100), 100);
+  const fill = document.getElementById('limit-fill');
+  fill.style.width = pct + '%';
+  fill.className = 'limit-fill' + (pct>=90?' danger':pct>=70?' warn':'');
+  document.getElementById('limit-value').textContent = `${week} / ${WEEK_LIMIT}`;
+  document.getElementById('c-remain').textContent = WEEK_LIMIT - week;
+  // 업데이트 시각
+  if(state.updated_at) document.getElementById('last-updated').textContent = state.updated_at.slice(11,19);
+  // 에이전트 그리드 재렌더
+  renderAgentGrid('overview-agent-grid', true);
+  renderAgentGrid('all-agent-grid', false);
+  // 로그
+  renderLog();
+  // 서비스 상태
+  document.getElementById('svc-scheduler').textContent = (catalog.schedules||[]).length ? 'Ready' : '미등록';
+  document.getElementById('svc-claude').textContent = 'Active';
+  document.getElementById('svc-firecrawl').textContent = 'Active';
+}
+
+function renderLog() {
+  const el = document.getElementById('log-list');
+  if(!el) return;
+  const q = (document.getElementById('log-filter')?.value||'').toLowerCase();
+  const logs = (state.log||[]).filter(l => !q || l.msg.toLowerCase().includes(q));
+  document.getElementById('log-count').textContent = `${logs.length}건`;
+  el.innerHTML = logs.length ? logs.map(l => `
+    <div class="log-item">
+      <span class="log-time">${l.time}</span>
+      <span class="log-msg">${l.msg}</span>
+    </div>`).join('')
+  : '<div style="color:var(--text3);padding:16px">로그 없음</div>';
+}
+
+// 탭 전환
+function switchTab(id) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab===id));
+  document.querySelectorAll('.pane').forEach(p => p.classList.toggle('active', p.id==='pane-'+id));
+}
+document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => switchTab(t.dataset.tab)));
+
+// 로그 필터
+function filterLog(type) {
+  switchTab('log');
+  const inp = document.getElementById('log-filter');
+  if(inp) { inp.value = type === 'today' ? '' : type; renderLog(); }
+}
+
+// 명령 실행
+async function sendCmd() {
+  const inp = document.getElementById('cmd-input');
+  const out = document.getElementById('cmd-output');
+  const prompt = inp.value.trim();
+  if(!prompt) return;
+  out.style.display = 'block';
+  out.textContent = '실행 중…';
+  try {
+    const r = await fetch(API+'/run', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({prompt})});
+    const d = await r.json();
+    out.textContent = d.output || d.error || '결과 없음';
+  } catch(e) {
+    out.textContent = '서버 연결 실패: ' + e.message;
+  }
+}
+
+// 스킬 실행
+function runSkill(name) {
+  switchTab('skills');
+  document.getElementById('cmd-input').value = name + ' ';
+  document.getElementById('cmd-input').focus();
+}
+
+// 일정 뷰 전환
+function setCalView(v) {
+  ['day','week','month','year'].forEach(k => {
+    document.getElementById('cal-'+k)?.classList.toggle('active',k===v);
+  });
+}
+
+// 직원 상세
+function openDetail(id) {
+  const agent = catalog.agents.find(a => a.id === id);
+  if(!agent) return;
+  const st = getAgentState(id);
+  document.getElementById('dp-name').textContent = agent.name;
+  document.getElementById('dp-rank').textContent = agent.rank;
+  document.getElementById('dp-desc').textContent = agent.description || '설명 없음';
+  document.getElementById('dp-status').innerHTML = `
+    <span class="badge ${st.status||'idle'}">${st.status==='working'?'작업중':st.status==='standby'?'대기발령':'대기'}</span>
+    ${st.task ? `<div style="margin-top:8px;font-size:13px;color:var(--text2)">${st.task}</div>` : ''}`;
+  document.getElementById('detail-overlay').style.display = 'block';
+  document.getElementById('detail-panel').style.display = 'block';
+}
+function closeDetail() {
+  document.getElementById('detail-overlay').style.display = 'none';
+  document.getElementById('detail-panel').style.display = 'none';
+}
+
+// 커맨드 팔레트
+function openPalette() {
+  document.getElementById('palette').classList.add('open');
+  document.getElementById('palette-input').value = '';
+  document.getElementById('palette-input').focus();
+  filterPalette();
+}
+function closePalette(e) { if(e.target===document.getElementById('palette')) document.getElementById('palette').classList.remove('open'); }
+document.addEventListener('keydown', e => {
+  if((e.metaKey||e.ctrlKey) && e.key==='k') { e.preventDefault(); openPalette(); }
+  if(e.key==='Escape') { document.getElementById('palette').classList.remove('open'); closeDetail(); }
+});
+
+function filterPalette() {
+  const q = document.getElementById('palette-input').value.toLowerCase();
+  const items = [
+    ...catalog.agents.map(a => ({icon:'👤', name:a.name, hint:a.rank, action:()=>{document.getElementById('palette').classList.remove('open');openDetail(a.id);}})),
+    ...catalog.skills.map(s => ({icon:'⚡', name:s.name, hint:'스킬', action:()=>{document.getElementById('palette').classList.remove('open');runSkill(s.name);}})),
+    {icon:'📋', name:'로그 보기', hint:'탭', action:()=>{document.getElementById('palette').classList.remove('open');switchTab('log');}},
+    {icon:'📅', name:'일정 보기', hint:'탭', action:()=>{document.getElementById('palette').classList.remove('open');switchTab('schedule');}},
+  ].filter(i => !q || i.name.toLowerCase().includes(q));
+  document.getElementById('palette-results').innerHTML = items.slice(0,8).map((i,idx) => `
+    <div class="palette-item" onclick="paletteExec(${idx})">
+      <div class="palette-item-icon">${i.icon}</div>
+      <span class="palette-item-name">${i.name}</span>
+      <span class="palette-item-hint">${i.hint}</span>
+    </div>`).join('');
+  document.querySelectorAll('.palette-item').forEach((el,idx) => {
+    el.addEventListener('click', () => items[idx].action());
+  });
+}
+function palKey(e) { if(e.key==='Escape') document.getElementById('palette').classList.remove('open'); }
+
+// 조직도 노드 클릭 → 직원 탭 상세 패널
+const ORG_ID_MAP = {
+  'malsook':  '말숙이',
+  'mooni':    '문이',
+  'gangi':    '강이',
+  'jaei':     '재이',
+  'saebyuki': '새벽이',
+  'oksuni':   '옥순이',
+  'tami':     '탐이',
+  'chaerin':  '채린이',
+  'kaesuni':  '캐순이',
+  'mulsaeki': '물색이',
+  'sonjili':  '손질이',
+  'myoi':     '묘이',
+  'sunwoo':   '선우',
+};
+function orgOpenDetail(orgId) {
+  const name = ORG_ID_MAP[orgId];
+  if(!name) return;
+  const agent = catalog.agents.find(a => a.name === name);
+  if(agent) {
+    switchTab('agents');
+    openDetail(agent.id);
+  } else {
+    // catalog에 없어도 이름·역할만 표시
+    document.getElementById('dp-name').textContent = name;
+    document.getElementById('dp-rank').textContent = '—';
+    document.getElementById('dp-desc').textContent = '카탈로그에 등록되지 않은 직원입니다.';
+    document.getElementById('dp-status').innerHTML = '<span class="badge idle">미등록</span>';
+    document.getElementById('detail-overlay').style.display = 'block';
+    document.getElementById('detail-panel').style.display = 'block';
+  }
+}
+
+// 초기화
+loadCatalog();
+connectSSE();
+setTimeout(pollState, 5000); // SSE 실패 시 폴백
+document.getElementById('last-updated').textContent = new Date().toLocaleTimeString('ko-KR');
+</script>
+</body>
+</html>

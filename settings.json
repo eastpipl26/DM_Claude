@@ -16,5 +16,31 @@
     ],
     "defaultMode": "acceptEdits"
   },
-  "theme": "dark"
+  "theme": "dark",
+  "skipDangerousModePermissionPrompt": true,
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Agent",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "C:\\Users\\eastp\\AppData\\Local\\Programs\\Python\\Python312\\python.exe \"C:\\Users\\eastp\\.claude\\scripts\\hook_update.py\"",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "C:\\Users\\eastp\\AppData\\Local\\Programs\\Python\\Python312\\python.exe \"C:\\Users\\eastp\\.claude\\scripts\\hook_update.py\"",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
 }

@@ -1,0 +1,20 @@
+{
+  "updated": "2026-06-27T09:00:00",
+  "agents": [
+    {"id":"malsuki","name":"말숙이","rank":"비서실장","status":"idle","task":"대기 중","room":"사무실","color":"#f0e68c"},
+    {"id":"gangi","name":"강이","rank":"과장","status":"done","task":"유튜브 노트 3개 저장 완료","room":"자료실","color":"#87ceeb"},
+    {"id":"muni","name":"문이","rank":"과장","status":"idle","task":"대기 중","room":"집필실","color":"#dda0dd"},
+    {"id":"oksuni","name":"옥순이","rank":"대리","status":"idle","task":"자정 루틴 대기","room":"서고","color":"#98fb98"},
+    {"id":"saebyeok","name":"새벽이","rank":"대리","status":"idle","task":"07:00 브리핑 대기","room":"뉴스룸","color":"#ffa07a"},
+    {"id":"jaei","name":"재이","rank":"대리","status":"working","task":"수이 테스트 진행 중","room":"인사실","color":"#f4a460"},
+    {"id":"kaesuni","name":"캐순이","rank":"사원","status":"idle","task":"대기 중","room":"리서치실","color":"#b0c4de"},
+    {"id":"mulsaek","name":"물색이","rank":"사원","status":"idle","task":"대기 중","room":"리서치실","color":"#e6e6fa"},
+    {"id":"sonjil","name":"손질이","rank":"사원","status":"idle","task":"대기 중","room":"검수실","color":"#ffe4b5"},
+    {"id":"sunwoo","name":"선우","rank":"대기발령","status":"standby","task":"대기발령 중","room":"음향실","color":"#808080"}
+  ],
+  "log": [
+    {"time":"09:12","msg":"강이 → 유튜브 노트 3개 저장 완료"},
+    {"time":"09:08","msg":"재이 → 수이 A타입 재작성 완료"},
+    {"time":"09:00","msg":"시스템 시작 — 말숙이 팀 출근"}
+  ]
+}

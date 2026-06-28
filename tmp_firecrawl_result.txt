@@ -1,0 +1,232 @@
+=== https://github.com/search?q=claude+os&type=issues&s=created&o=desc ===
+[Skip to content](https://github.com/search?q=claude+os&type=issues&s=created&o=desc#start-of-content)
+
+You signed in with another tab or window. [Reload](https://github.com/search?q=claude+os&type=issues&s=created&o=desc) to refresh your session.You signed out in another tab or window. [Reload](https://github.com/search?q=claude+os&type=issues&s=created&o=desc) to refresh your session.You switched accounts on another tab or window. [Reload](https://github.com/search?q=claude+os&type=issues&s=created&o=desc) to refresh your session.Dismiss alert
+
+{{ message }}
+
+# issues Search Results · claude os
+
+## Filter by
+
+- [Code... (...)results](https://github.com/search?q=claude+os&type=code)
+- [Repositories\\
+\\
+results](https://github.com/search?q=claude+os&type=repositories)
+- [Issues\\
+\\
+results](https://github.com/search?q=claude+os&type=issues)
+- [Pull requests\\
+\\
+results](https://github.com/search?q=claude+os&type=pullrequests)
+- [Discussions\\
+\\
+results](https://github.com/search?q=claude+os&type=discussions)
+- [Users\\
+\\
+results](https://github.com/search?q=claude+os&type=users)
+- More
+- ### State
+
+- [Open](https://github.com/search?q=claude+os&type=issues&s=created&o=desc&state=open)
+- [Closed](https://github.com/search?q=claude+os&type=issues&s=created&o=desc&state=closed)
+- ### Advanced
+
+- Owner
+
+- State
+
+- Close reason
+
+- [Has linked pull request](https://github.com/search?q=claude+os+linked%3Apr&type=issues&s=created&o=desc)
+- Author
+
+- Assignee
+
+- Mentioned user
+
+- Mentioned team
+
+- Commenter
+
+- Involved user
+
+- Label
+
+- Milestone
+
+- Number of comments
+
+- Number of interactions
+- [Advanced search](https://github.com/search/advanced)
+
+Filter:Issues97k (97k)
+
+97k results  (172ms)
+
+## 97k results
+
+Sort by: Newest
+
+Filter
+
+### [windyroad/agent-plugins](https://github.com/windyroad/agent-plugins)    [\[problem\] manage-problem per-session create-gate marker lets bulk-Write paths bypass per-ticket P094 README refresh](https://github.com/windyroad/agent-plugins/issues/296)
+
+- ![](https://avatars.githubusercontent.com/u/7802440?s=48&v=4)tompahoward
+·- Opened
+2 minutes ago
+
+·- [#296](https://github.com/windyroad/agent-plugins/issues/296)
+
+### [zed-industries/zed](https://github.com/zed-industries/zed)    [Zed showing stale git status and files](https://github.com/zed-industries/zed/issues/60006)
+
+... opencode, and zed s own _Claude_ agent)
+4\. The changes tab shows the stale files prior to the agent s intervention. The changes tab in zed is not the same as
+running git status or git diff in the ...
+
+state:needs triage
+
+- ![](https://avatars.githubusercontent.com/u/283640548?s=48&v=4)anacletos
+·- 1
+·- Opened
+3 minutes ago
+
+·- [#60006](https://github.com/zed-industries/zed/issues/60006)
+
+### [raavier/post\_news](https://github.com/raavier/post_news)    [\[ _Claude_ Code · Anthropic\] v2.1.195](https://github.com/raavier/post_news/issues/163)
+
+pending-approval
+
+- ![](https://avatars.githubusercontent.com/in/15368?s=48&v=4)github-actions\[bot\]
+·- Opened
+10 minutes ago
+
+·- [#163](https://github.com/raavier/post_news/issues/163)
+
+### [ai-swiss/base](https://github.com/ai-swiss/base)    [\[base init\] Workspace existant : artefacts manquants non proposés (FR-INIT-004)](https://github.com/ai-swiss/base/issues/12)
+
+bug
+
+- ![](https://avatars.githubusercontent.com/u/196519128?s=48&v=4)SmilosNIJ
+·- Opened
+13 minutes ago
+
+·- [#12](https://github.com/ai-swiss/base/issues/12)
+
+### [blixten85/politiker-webapp](https://github.com/blixten85/politiker-webapp)    [Feedback: \[Auto-rapport\] null is not an object (evaluating 'document.g…](https://github.com/blixten85/politiker-webapp/issues/81)
+
+feedback
+
+user-reported
+
+- ![](https://avatars.githubusercontent.com/u/36226327?s=48&v=4)blixten85
+·- 2
+·- Opened
+17 minutes ago
+
+·- [#81](https://github.com/blixten85/politiker-webapp/issues/81)
+
+### [laqieer/FEBuilderGBA](https://github.com/laqieer/FEBuilderGBA)    [Code-sign / notarize Windows and macOS release artifacts (SmartScreen / Gatekeeper)](h
+
+=== https://github.com/anthropics/claude-code/issues?q=os&sort=created&direction=desc ===
+[Skip to content](https://github.com/anthropics/claude-code/issues?q=os&sort=created&direction=desc#start-of-content)
+
+You signed in with another tab or window. [Reload](https://github.com/anthropics/claude-code/issues?q=os&sort=created&direction=desc) to refresh your session.You signed out in another tab or window. [Reload](https://github.com/anthropics/claude-code/issues?q=os&sort=created&direction=desc) to refresh your session.You switched accounts on another tab or window. [Reload](https://github.com/anthropics/claude-code/issues?q=os&sort=created&direction=desc) to refresh your session.Dismiss alert
+
+{{ message }}
+
+### Uh oh!
+
+There was an error while loading. [Please reload this page](https://github.com/anthropics/claude-code/issues?q=os&sort=created&direction=desc).
+
+[anthropics](https://github.com/anthropics)/ **[claude-code](https://github.com/anthropics/claude-code)** Public
+
+- [Notifications](https://github.com/login?return_to=%2Fanthropics%2Fclaude-code) You must be signed in to change notification settings
+- [Fork\\
+21.7k](https://github.com/login?return_to=%2Fanthropics%2Fclaude-code)
+- [Star\\
+135k](https://github.com/login?return_to=%2Fanthropics%2Fclaude-code)
+
+
+* * *
+
+- Collapse sidebar
+
+# Issues
+
+Search Issues
+
+os
+
+os
+
+Clear filter
+
+Search
+
+[Labels](https://github.com/anthropics/claude-code/labels) [Milestones](https://github.com/anthropics/claude-code/milestones)
+
+New issueIssue creation is restricted in this repository
+
+## Search results
+
+- [Open\\
+1,773 (1,773)](https://github.com/anthropics/claude-code/issues?q=os%20state%3Aopen)
+- [Closed\\
+10,802 (10,802)](https://github.com/anthropics/claude-code/issues?q=os%20state%3Aclosed)
+
+Author
+
+Labels
+
+Projects
+
+Milestones
+
+Assignees
+
+Types
+
+Sort by Newest, descending
+
+### [\[BUG\] Support HTTPS proxy (https:// scheme) for HTTPS\_PROXY environment variable](https://github.com/anthropics/claude-code/issues/71796)
+
+[area:networking](https://github.com/anthropics/claude-code/issues?q=os%20label%3Aarea%3Anetworking)
+
+[bugSomething isn't working](https://github.com/anthropics/claude-code/issues?q=os%20label%3Abug) Something isn't working
+
+[has reproHas detailed reproduction steps](https://github.com/anthropics/claude-code/issues?q=os%20label%3A%22has%20repro%22) Has detailed reproduction steps
+
+[platform:macosIssue specifically occurs on macOS](https://github.com/anthropics/claude-code/issues?q=os%20label%3Aplatform%3Amacos) Issue specifically occurs on macOS
+
+Status: Open.
+
+#71796In anthropics/claude-code;
+
+· [doroh228](https://github.com/anthropics/claude-code/issues?q=os%20author%3Adoroh228) opened 1 hour agoon Jun 27, 2026
+
+### [Allow adjusting font size of the chat/conversation panel independently from the editor](https://github.com/anthropics/claude-code/issues/71786)
+
+[area:a11y](https://github.com/anthropics/claude-code/issues?q=os%20label%3Aarea%3Aa11y)
+
+[area:ide](https://github.com/anthropics/claude-code/issues?q=os%20label%3Aarea%3Aide)
+
+[enhancementNew feature or request](https://github.com/anthropics/claude-code/issues?q=os%20label%3Aenhancement) New feature or request
+
+[platform:vscodeIssue specifically occurs in VS Code](https://github.com/anthropics/claude-code/issues?q=os%20label%3Aplatform%3Avscode) Issue specifically occurs in VS Code
+
+Status: Open.
+
+#71786In anthropics/claude-code;
+
+· [GeraltR](https://github.com/anthropics/claude-code/issues?q=os%20author%3AGeraltR) opened 3 hours agoon Jun 27, 2026
+
+### [\[BUG\] Consistent ~40-50s Slow First Byte on Opus 4.6 (1M context) — degrades over session lifetime, not context size](https://github.com/anthropics/claude-code/issues/71770)
+
+[area:model](https://github.com/anthropics/claude-code/issues?q=os%20label%3Aarea%3Amodel)
+
+[bugSomething isn't working](https://github.com/anthropics/claude-code/issues?q=os%20label%3Abug) Something isn't working
+
+[performance](https://github.com/anthropics/claude-code/issues?q=os%20label%3Aperformance)
+
+[platform:macosIssue specifically occurs on macOS](https://github

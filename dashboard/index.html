@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>말숙이 비서팀</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DotGothic16&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;image-rendering:pixelated}
+html,body{width:100%;height:100%;overflow:hidden;background:#0a0a14}
+body{display:flex;flex-direction:column}
+
+/* TOP HUD */
+#hud{height:36px;background:#1a1228;border-bottom:2px solid #3a2848;display:flex;align-items:center;padding:0 12px;gap:16px;flex-shrink:0}
+.hud-title{color:#f0e68c;font:bold 13px 'DotGothic16',monospace;letter-spacing:2px}
+.hud-sep{color:#3a2848;font-size:18px}
+#gameclock{color:#98c379;font:11px 'DotGothic16',monospace}
+#realclock{color:#566;font:11px 'DotGothic16',monospace}
+.hud-right{margin-left:auto;display:flex;gap:10px}
+.hud-stat{font:10px 'DotGothic16',monospace;padding:2px 8px;border-radius:3px;border:1px solid}
+.hud-w{color:#98c379;border-color:#2a4a2a;background:#0a1a0a}
+.hud-i{color:#abb2bf;border-color:#2a2a3a;background:#0a0a14}
+.hud-s{color:#e06c75;border-color:#4a1a1a;background:#140a0a}
+
+/* MAIN */
+#main{flex:1;display:flex;overflow:hidden}
+
+/* MAP */
+#mapwrap{flex:1;position:relative;overflow:hidden;background:#1a2810}
+canvas#cv{display:block;width:100%;height:100%}
+
+/* SIDEBAR */
+#sb{width:200px;background:#0e0e1c;border-left:2px solid #2a2848;display:flex;flex-direction:column;flex-shrink:0}
+#sb-detail{padding:10px;border-bottom:1px solid #1e1e30;min-height:100px;flex-shrink:0}
+.sd-empty{color:#2a2a4a;font:10px 'DotGothic16',monospace;padding-top:8px}
+.sd-name{color:#f0e68c;font:12px 'DotGothic16',monospace;margin-bottom:6px}
+.sd-row{display:flex;justify-content:space-between;font:9px 'DotGothic16',monospace;color:#4a4a6a;margin:3px 0}
+.sd-val{color:#abb2bf}
+.sd-val.w{color:#98c379}.sd-val.d{color:#61afef}.sd-val.s{color:#e06c75}
+
+/* AGENT LIST */
+#sb-list{flex:1;overflow-y:auto;padding:6px 6px 0}
+.ac{background:#111126;border:1px solid #1e1e36;border-radius:3px;padding:6px 8px;margin-bottom:4px;cursor:pointer;transition:border-color .1s}
+.ac:hover,.ac.sel{border-color:#f0e68c}
+.ac.wk{border-left:3px solid #98c379}
+.ac.dn{border-left:3px solid #61afef}
+.ac.st{border-left:3px solid #e06c75;opacity:.5}
+.ac-name{font:11px 'DotGothic16',monospace;color:#f0e68c}
+.ac-task{font:9px 'DotGothic16',monospace;color:#566;margin-top:1px;line-height:1.3}
+.ac-task.wk{color:#98c379}.ac-task.dn{color:#61afef}.ac-task.st{color:#e06c75}
+
+/* LOG */
+#sb-log{border-top:1px solid #1e1e30;padding:6px;max-height:130px;overflow-y:auto;flex-shrink:0}
+.log-title{font:8px 'DotGothic16',monospace;color:#2a2a4a;letter-spacing:2px;margin-bottom:3px}
+.log-line{font:8px 'DotGothic16',monospace;color:#2a2a4a;line-height:1.7;border-bottom:1px solid #0e0e1c;padding:1px 0;transition:color .3s}
+.log-line.fr{color:#7a8a9a}
+
+/* BOTTOM */
+#bot{height:24px;background:#0e0e1c;border-top:2px solid #1e1e30;display:flex;align-items:center;padding:0 10px;gap:14px;flex-shrink:0}
+.bot-hint{font:9px 'DotGothic16',monospace;color:#2a2a4a}
+
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:#0a0a14}::-webkit-scrollbar-thumb{background:#2a2848}
+</style>
+</head>
+<body>
+<div id="hud">
+  <span class="hud-title">▶ 말숙이 비서실</span>
+  <span class="hud-sep">|</span>
+  <span id="gameclock">☀️ 오전 9:00</span>
+  <span class="hud-sep">|</span>
+  <span id="realclock">--:--:--</span>
+  <div class="hud-right">
+    <span class="hud-stat hud-w" id="sw">작업 0</span>
+    <span class="hud-stat hud-i" id="si">대기 0</span>
+    <span class="hud-stat hud-s" id="ss">대기발령 0</span>
+  </div>
+</div>
+<div id="main">
+  <div id="mapwrap"><canvas id="cv"></canvas></div>
+  <div id="sb">
+    <div id="sb-detail"><div class="sd-empty">← 캐릭터를 클릭하세요</div></div>
+    <div id="sb-list"></div>
+    <div id="sb-log"><div class="log-title">─ ACTION LOG ─</div><div id="loglines"></div></div>
+  </div>
+</div>
+<div id="bot">
+  <span class="bot-hint">CLICK: 캐릭터 선택</span>
+  <span class="bot-hint">|</span>
+  <span class="bot-hint">agents.json 수정 → 5초 후 자동 반영</span>
+</div>
+
+<script>
+// ── CANVAS SETUP ────────────────────────────────────
+const cv=document.getElementById('cv'),ctx=cv.getContext('2d');
+let W=0,H=0;
+function resize(){
+  const mw=document.getElementById('mapwrap');
+  W=mw.clientWidth;H=mw.clientHeight;
+  cv.width=W;cv.height=H;
+}
+resize();
+new ResizeObserver(resize).observe(document.getElementById('mapwrap'));
+
+// ── MAP DATA ────────────────────────────────────────
+// Tile types: 0=grass, 1=dirt-path, 2..=room floors
+const COLS=22,ROWS=18,TILE=()=>Math.min(Math.floor(W/COLS),Math.floor(H/ROWS));
+
+const ROOMS=[
+  {id:'library', label:'자료실',  r1:1,c1:1, r2:5,c2:6,  floor:'#162010',accent:'#1e3018'},
+  {id:'writing', label:'집필실',  r1:1,c1:8, r2:5,c2:13, floor:'#10101e',accent:'#181828'},
+  {id:'research',label:'리서치실',r1:1,c1:15,r2:5,c2:20, floor:'#14101a',accent:'#1e1428'},
+  {id:'archive', label:'서고',    r1:7,c1:1, r2:11,c2:5, floor:'#101410',accent:'#181c14'},
+  {id:'office',  label:'사무실',  r1:7,c1:7, r2:11,c2:14,floor:'#141e10',accent:'#1c2a14'},
+  {id:'news',    label:'뉴스룸',  r1:7,c1:16,r2:11,c2:20,floor:'#101814',accent:'#14201a'},
+  {id:'sound',   label:'음향실',  r1:13,c1:1,r2:17,c2:5, floor:'#0e0e16',accent:'#141420'},
+  {id:'hr',      label:'인사실',  r1:13,c1:7,r2:17,c2:14,floor:'#181410',accent:'#201c14'},
+  {id:'review',  label:'검수실',  r1:13,c1:16,r2:17,c2:20,floor:'#18100e',accent:'#241614'},
+];
+
+// Build map grid
+let GRID=[];
+function buildGrid(){
+  GRID=[];
+  for(let r=0;r<ROWS;r++){GRID[r]=[];for(let c=0;c<COLS;c++)GRID[r][c]={type:0,room:null};}
+  // corridors
+  for(let c=0;c<COLS;c++){GRID[6][c].type=1;GRID[12][c].type=1;}
+  for(let r=0;r<ROWS;r++){GRID[r][0].type=1;GRID[r][6].type=1;GRID[r][14].type=1;GRID[r][21].type=1;}
+  // rooms
+  for(const rm of ROOMS){
+    for(let r=rm.r1;r<=rm.r2;r++)for(let c=rm.c1;c<=rm.c2;c++){
+      GRID[r][c].type=2;GRID[r][c].room=rm.id;
+    }
+  }
+}
+buildGrid();
+
+// Furniture {t, r, c}
+const FURN=[
+  // 자료실
+  {t:'desk',r:2,c:2},{t:'desk',r:3,c:4},{t:'shelf',r:1,c:5},{t:'shelf',r:2,c:5},{t:'shelf',r:3,c:5},{t:'plant',r:5,c:1},
+  // 집필실
+  {t:'desk',r:2,c:9},{t:'desk',r:3,c:11},{t:'shelf',r:1,c:12},{t:'shelf',r:2,c:12},{t:'plant',r:5,c:8},{t:'plant',r:1,c:8},
+  // 리서치실
+  {t:'desk',r:2,c:16},{t:'desk',r:2,c:18},{t:'desk',r:3,c:17},{t:'plant',r:5,c:15},{t:'plant',r:5,c:20},
+  // 서고
+  {t:'shelf',r:8,c:1},{t:'shelf',r:9,c:1},{t:'shelf',r:10,c:1},{t:'shelf',r:8,c:4},{t:'shelf',r:9,c:4},{t:'plant',r:7,c:3},
+  // 사무실
+  {t:'desk',r:7,c:8},{t:'desk',r:7,c:13},{t:'desk',r:9,c:10},{t:'plant',r:11,c:7},{t:'plant',r:11,c:14},{t:'plant',r:7,c:10},
+  // 뉴스룸
+  {t:'desk',r:8,c:17},{t:'desk',r:9,c:19},{t:'plant',r:7,c:16},{t:'shelf',r:7,c:20},
+  // 음향실
+  {t:'desk',r:14,c:2},{t:'desk',r:15,c:4},{t:'shelf',r:13,c:4},{t:'plant',r:17,c:1},
+  // 인사실
+  {t:'desk',r:14,c:8},{t:'desk',r:14,c:12},{t:'desk',r:15,c:10},{t:'plant',r:13,c:14},{t:'plant',r:17,c:7},{t:'plant',r:13,c:7},
+  // 검수실
+  {t:'desk',r:14,c:17},{t:'desk',r:15,c:19},{t:'shelf',r:13,c:20},{t:'plant',r:17,c:16},
+];
+
+// ── AGENT DEFINITIONS ───────────────────────────────
+const AGENT_DEFS=[
+  {id:'malsuki',name:'말숙이',rank:'비서실장',color:'#f0e68c',dark:'#806800',
+   status:'idle',task:'대기 중',
+   wp:[{r:8,c:9},{r:9,c:11},{r:9,c:10},{r:8,c:12}],
+   says:['업무 조율 중','직원 현황 점검','보고 준비']},
+  {id:'gangi',name:'강이',rank:'과장',color:'#87ceeb',dark:'#2a6a90',
+   status:'done',task:'유튜브 노트 완료',
+   wp:[{r:2,c:2},{r:3,c:4},{r:2,c:3},{r:3,c:2}],
+   says:['노트 저장 완료 ✓','MOC 작성 완료','다음 URL 대기']},
+  {id:'muni',name:'문이',rank:'과장',color:'#dda0dd',dark:'#7a307a',
+   status:'idle',task:'대기 중',
+   wp:[{r:2,c:9},{r:3,c:11},{r:2,c:11},{r:3,c:9}],
+   says:['집필 대기','글감 구상 중','키워드 구상']},
+  {id:'oksuni',name:'옥순이',rank:'대리',color:'#98fb98',dark:'#2a6a2a',
+   status:'idle',task:'자정 루틴 대기',
+   wp:[{r:8,c:2},{r:9,c:3},{r:10,c:2},{r:9,c:2}],
+   says:['PARA 유지 확인','파일 분류 대기','Inbox 비어있음']},
+  {id:'saebyeok',name:'새벽이',rank:'대리',color:'#ffa07a',dark:'#903020',
+   status:'idle',task:'07:00 브리핑 대기',
+   wp:[{r:8,c:17},{r:9,c:18},{r:9,c:17},{r:8,c:19}],
+   says:['뉴스 수집 대기','날씨 확인 중','브리핑 준비']},
+  {id:'jaei',name:'재이',rank:'대리',color:'#f4a460',dark:'#904020',
+   status:'working',task:'수이 테스트 진행 중',
+   wp:[{r:14,c:8},{r:14,c:12},{r:15,c:10},{r:15,c:9}],
+   says:['수이 평가 중 📋','테스트 케이스 설계','채용 검토 중']},
+  {id:'kaesuni',name:'캐순이',rank:'사원',color:'#b0c4de',dark:'#3a5a80',
+   status:'idle',task:'대기 중',
+   wp:[{r:2,c:16},{r:3,c:17},{r:2,c:18},{r:3,c:16}],
+   says:['검색 대기','자료 수집 대기','출처 확인 준비']},
+  {id:'mulsaek',name:'물색이',rank:'사원',color:'#e6e6fa',dark:'#5a5a90',
+   status:'idle',task:'대기 중',
+   wp:[{r:3,c:18},{r:2,c:17},{r:3,c:19},{r:2,c:19}],
+   says:['키워드 탐색 대기','SEO 분석 준비','연관검색어 대기']},
+  {id:'sonjil',name:'손질이',rank:'사원',color:'#ffe4b5',dark:'#906030',
+   status:'idle',task:'대기 중',
+   wp:[{r:14,c:17},{r:15,c:18},{r:14,c:19},{r:15,c:17}],
+   says:['검수 대기','맞춤법 준비','사실 검증 대기']},
+  {id:'sunwoo',name:'선우',rank:'대기발령',color:'#707070',dark:'#303030',
+   status:'standby',task:'대기발령 중',
+   wp:[{r:14,c:2},{r:15,c:3}],
+   says:['...','(대기발령)']},
+];
+
+let agents=AGENT_DEFS.map(d=>({...d,
+  wpi:0,mspeed:90+Math.floor(Math.random()*100),mtick:Math.floor(Math.random()*80),
+  px:0,py:0,bubble:'',btick:0,bobOff:Math.random()*Math.PI*2
+}));
+
+function initPositions(){
+  const ts=TILE();
+  agents.forEach(a=>{
+    const wp=a.wp[0];
+    a.px=(wp.c+0.5)*ts;a.py=(wp.r+0.5)*ts;
+  });
+}
+initPositions();
+
+// ── STATE ───────────────────────────────────────────
+let selected=null,frame=0,gameMin=0,clockTick=0,logs=[];
+
+// ── DRAW MAP ────────────────────────────────────────
+function getRoomById(id){return ROOMS.find(r=>r.id===id);}
+
+function drawMap(){
+  const ts=TILE();
+  // base pass
+  for(let r=0;r<ROWS;r++){
+    for(let c=0;c<COLS;c++){
+      const g=GRID[r][c];
+      const x=c*ts,y=r*ts;
+      if(g.type===0){
+        // grass
+        ctx.fillStyle=(r+c)%2===0?'#2a4e14':'#234410';
+        ctx.fillRect(x,y,ts,ts);
+        if((r*5+c*3)%7===0){ctx.fillStyle='rgba(255,255,255,0.05)';ctx.fillRect(x+3,y+4,2,3);}
+        if((r*3+c*7)%11===0){ctx.fillStyle='rgba(255,255,255,0.04)';ctx.fillRect(x+ts-4,y+2,2,4);}
+      } else if(g.type===1){
+        // path
+        ctx.fillStyle=(r+c)%2===0?'#5a3e1c':'#4e3418';
+        ctx.fillRect(x,y,ts,ts);
+        // cobble detail
+        if(ts>=20){
+          ctx.fillStyle='rgba(0,0,0,0.25)';
+          ctx.fillRect(x,y,ts,1);ctx.fillRect(x,y+ts-1,ts,1);
+          ctx.fillRect(x,y,1,ts);ctx.fillRect(x+ts-1,y,1,ts);
+        }
+      } else {
+        // room floor
+        const rm=getRoomById(g.room);
+        const alt=(r+c)%3===0;
+        ctx.fillStyle=alt?(rm?.accent||'#1a1a2a'):(rm?.floor||'#14141e');
+        ctx.fillRect(x,y,ts,ts);
+        // floor grid
+        if(ts>=20){
+          ctx.fillStyle='rgba(255,255,255,0.03)';
+          ctx.fillRect(x,y,ts,1);ctx.fillRect(x,y,1,ts);
+        }
+      }
+    }
+  }
+  // room borders + labels
+  for(const rm of ROOMS){
+    const x=rm.c1*ts,y=rm.r1*ts;
+    const w=(rm.c2-rm.c1+1)*ts,h=(rm.r2-rm.r1+1)*ts;
+    ctx.strokeStyle='rgba(200,200,255,0.15)';ctx.lineWidth=1.5;
+    ctx.strokeRect(x+0.5,y+0.5,w-1,h-1);
+    // label
+    const fs=Math.max(8,Math.min(11,ts*0.32));
+    ctx.font=`${fs}px 'DotGothic16',monospace`;ctx.textAlign='center';
+    ctx.fillStyle='rgba(255,255,255,0.18)';
+    ctx.fillText(rm.label,(rm.c1+rm.c2+1)/2*ts,rm.r1*ts+fs+1);
+  }
+}
+
+function drawFurniture(){
+  const ts=TILE();
+  for(const f of FURN){
+    const x=f.c*ts+2,y=f.r*ts+2,s=ts-4;
+    if(s<4) continue;
+    if(f.t==='desk'){
+      // desk surface
+      ctx.fillStyle='#5c3d1e';ctx.fillRect(x,y,s,s);
+      // highlight edge
+      ctx.fillStyle='#7a5232';ctx.fillRect(x,y,s,3);ctx.fillRect(x,y,2,s);
+      // monitor / item
+      if(s>14){ctx.fillStyle='rgba(100,180,255,0.3)';ctx.fillRect(x+s-8,y+2,5,4);}
+    } else if(f.t==='shelf'){
+      ctx.fillStyle='#3a2810';ctx.fillRect(x,y,s,s);
+      const rows=Math.max(2,Math.floor(s/7));
+      for(let i=0;i<rows;i++){
+        ctx.fillStyle=i%2?'#5a3c18':'#4a2c10';
+        ctx.fillRect(x+1,y+1+i*Math.floor(s/rows),s-2,Math.floor(s/rows)-1);
+      }
+    } else if(f.t==='plant'){
+      // pot
+      ctx.fillStyle='#5a3010';ctx.fillRect(x+s/2-3,y+s-7,6,6);
+      // leaves
+      ctx.fillStyle='#2d6e1e';
+      ctx.beginPath();ctx.arc(x+s/2,y+s*0.45,s*0.35,0,Math.PI*2);ctx.fill();
+      ctx.fillStyle='#3d8c2a';
+      ctx.beginPath();ctx.arc(x+s/2-s*0.15,y+s*0.35,s*0.22,0,Math.PI*2);ctx.fill();
+      ctx.fillStyle='#4aaa32';
+      ctx.beginPath();ctx.arc(x+s/2+s*0.1,y+s*0.28,s*0.15,0,Math.PI*2);ctx.fill();
+    }
+  }
+}
+
+// ── DRAW AGENTS ─────────────────────────────────────
+function drawAgent(a){
+  const ts=TILE();
+  const x=Math.round(a.px),y=Math.round(a.py);
+  const bob=a.status==='working'?Math.sin(frame*0.1+a.bobOff)*1.5:0;
+  const isSel=selected===a.id;
+  const isWork=a.status==='working';
+  const isDead=a.status==='standby';
+
+  // selection ring
+  if(isSel){
+    ctx.save();ctx.globalAlpha=0.5+0.3*Math.sin(frame*0.08);
+    ctx.strokeStyle='#fff';ctx.lineWidth=1.5;ctx.setLineDash([3,3]);
+    ctx.beginPath();ctx.arc(x,y+bob,ts*0.42,0,Math.PI*2);ctx.stroke();
+    ctx.setLineDash([]);ctx.restore();
+  }
+  // work glow
+  if(isWork){
+    ctx.save();ctx.globalAlpha=0.15+0.08*Math.sin(frame*0.07);
+    ctx.fillStyle=a.color;ctx.beginPath();ctx.arc(x,y+bob,ts*0.48,0,Math.PI*2);ctx.fill();
+    ctx.restore();
+  }
+
+  const h=ts*0.22,bod=ts*0.16,leg=ts*0.12;
+  const dy=y+bob;
+
+  // shadow
+  ctx.save();ctx.globalAlpha=0.25;
+  ctx.fillStyle='#000';ctx.beginPath();ctx.ellipse(x,dy+h*1.8+bod*2+leg*1.2,h*0.8,h*0.25,0,0,Math.PI*2);ctx.fill();
+  ctx.restore();
+
+  // legs
+  const lp=isWork?Math.sin(frame*0.15)*leg*0.6:0;
+  ctx.fillStyle=a.dark;
+  ctx.fillRect(x-h*0.5,dy+h*1.5+bod*1.8,h*0.55,leg+lp);
+  ctx.fillRect(x+h*0.0,dy+h*1.5+bod*1.8,h*0.55,leg-lp);
+  // body
+  ctx.fillStyle=isDead?'#555':a.dark;
+  ctx.fillRect(x-h*0.55,dy+h*0.5,h*1.1,bod*2);
+  // arms
+  if(isWork){
+    const ap=Math.sin(frame*0.15)*h*0.4;
+    ctx.fillRect(x-h*0.9,dy+h*0.7+ap,h*0.35,bod);
+    ctx.fillRect(x+h*0.55,dy+h*0.7-ap,h*0.35,bod);
+  }
+  // head
+  ctx.fillStyle=isDead?'#888':a.color;
+  ctx.beginPath();ctx.arc(x,dy-h*0.1,h,0,Math.PI*2);ctx.fill();
+  // eyes
+  ctx.fillStyle=isDead?'#555':'rgba(0,0,0,0.7)';
+  const ey=dy-h*0.15,er=Math.max(1.5,h*0.22);
+  ctx.beginPath();ctx.arc(x-h*0.35,ey,er,0,Math.PI*2);ctx.fill();
+  ctx.beginPath();ctx.arc(x+h*0.35,ey,er,0,Math.PI*2);ctx.fill();
+  // blush (working)
+  if(isWork){ctx.save();ctx.globalAlpha=0.4;ctx.fillStyle='#ff8888';
+    ctx.beginPath();ctx.arc(x-h*0.6,ey+er,er*0.9,0,Math.PI*2);ctx.fill();
+    ctx.beginPath();ctx.arc(x+h*0.6,ey+er,er*0.9,0,Math.PI*2);ctx.fill();
+    ctx.restore();}
+
+  // name tag (always visible)
+  const fs=Math.max(7,Math.min(10,ts*0.28));
+  ctx.font=`${fs}px 'DotGothic16',monospace`;ctx.textAlign='center';
+  // background pill
+  const nw=ctx.measureText(a.name).width+8;
+  ctx.fillStyle='rgba(0,0,0,0.7)';
+  ctx.fillRect(x-nw/2,dy+h+bod*2+leg+2,nw,fs+3);
+  ctx.fillStyle=isDead?'#555':a.color;
+  ctx.fillText(a.name,x,dy+h+bod*2+leg+fs+2);
+
+  // bubble
+  if(a.bubble&&a.btick>0){
+    const bfs=Math.max(7,ts*0.26);
+    ctx.font=`${bfs}px 'DotGothic16',monospace`;
+    const bw=ctx.measureText(a.bubble).width+12,bh=bfs+8;
+    const bx=Math.min(Math.max(x-bw/2,2),W-202-bw-2);
+    const by=Math.max(dy-h-bh-8,2);
+    ctx.fillStyle='rgba(8,8,20,0.92)';
+    ctx.fillRect(bx,by,bw,bh);
+    ctx.strokeStyle=a.color;ctx.lineWidth=1;
+    ctx.strokeRect(bx,by,bw,bh);
+    // tail
+    ctx.fillStyle='rgba(8,8,20,0.92)';
+    ctx.beginPath();ctx.moveTo(x-4,by+bh);ctx.lineTo(x+4,by+bh);ctx.lineTo(x,by+bh+5);ctx.closePath();ctx.fill();
+    ctx.fillStyle='#ddd';ctx.font=`${bfs}px 'DotGothic16',monospace`;ctx.textAlign='left';
+    ctx.fillText(a.bubble,bx+5,by+bfs+3);
+    ctx.textAlign='center';
+  }
+}
+
+// ── UPDATE ───────────────────────────────────────────
+function updateAgents(){
+  const ts=TILE();
+  for(const a of agents){
+    if(a.status==='standby'){
+      const tx=(a.wp[0].c+0.5)*ts,ty=(a.wp[0].r+0.5)*ts;
+      a.px+=(tx-a.px)*0.05;a.py+=(ty-a.py)*0.05;
+      continue;
+    }
+    a.mtick++;
+    if(a.mtick>=a.mspeed){
+      a.mtick=0;
+      a.wpi=(a.wpi+1)%a.wp.length;
+      if(a.says.length&&Math.random()<0.5){
+        a.bubble=a.says[Math.floor(Math.random()*a.says.length)];
+        a.btick=80+Math.floor(Math.random()*50);
+        addLog(a.name+' → '+a.bubble.replace(/[📋✓]/g,'').trim());
+      }
+    }
+    const tx=(a.wp[a.wpi].c+0.5)*ts,ty=(a.wp[a.wpi].r+0.5)*ts;
+    a.px+=(tx-a.px)*0.06;a.py+=(ty-a.py)*0.06;
+    if(a.btick>0)a.btick--;else a.bubble='';
+  }
+}
+
+// ── CLOCK ───────────────────────────────────────────
+function updateClock(){
+  clockTick++;
+  if(clockTick%3===0){
+    gameMin=(gameMin+1)%720;
+    const h=Math.floor(gameMin/60)+9,m=gameMin%60;
+    const ap=h<12?'☀️ 오전':h<20?'🌆 오후':'🌙 밤';
+    const hh=h>12?h-12:h||12;
+    document.getElementById('gameclock').textContent=`${ap} ${hh}:${String(m).padStart(2,'0')}`;
+    const dark=h>=20||h<6;
+    document.getElementById('mapwrap').style.filter=dark?'brightness(0.55)':'brightness(1)';
+  }
+  const now=new Date();
+  document.getElementById('realclock').textContent=now.toLocaleTimeString('ko-KR');
+  // hud stats
+  document.getElementById('sw').textContent='작업 '+agents.filter(a=>a.status==='working'||a.status==='done').length;
+  document.getElementById('si').textContent='대기 '+agents.filter(a=>a.status==='idle').length;
+  document.getElementById('ss').textContent='대기발령 '+agents.filter(a=>a.status==='standby').length;
+}
+
+// ── SIDEBAR ─────────────────────────────────────────
+function buildSidebar(){
+  document.getElementById('sb-list').innerHTML=agents.map(a=>`
+    <div class="ac ${a.status==='working'?'wk':a.status==='done'?'dn':a.status==='standby'?'st':''} ${selected===a.id?'sel':''}" onclick="selAgent('${a.id}')">
+      <div class="ac-name">${a.name} <span style="font-size:8px;color:#3a3a5a">${a.rank}</span></div>
+      <div class="ac-task ${a.status==='working'?'wk':a.status==='done'?'dn':a.status==='standby'?'st':''}">${a.task}</div>
+    </div>`).join('');
+}
+
+window.selAgent=function(id){
+  selected=selected===id?null:id;
+  if(selected){
+    const a=agents.find(x=>x.id===id);
+    const sc=a.status==='working'?'w':a.status==='done'?'d':a.status==='standby'?'s':'';
+    const sl=a.status==='working'?'🟢 작업 중':a.status==='done'?'✅ 완료':a.status==='standby'?'🔴 대기발령':'⚪ 대기';
+    const room=ROOMS.find(rm=>rm.id===GRID[a.wp[0].r]?.[a.wp[0].c]?.room)?.label||'이동 중';
+    document.getElementById('sb-detail').innerHTML=`
+      <div class="sd-name">${a.name}</div>
+      <div class="sd-row"><span>직급</span><span class="sd-val">${a.rank}</span></div>
+      <div class="sd-row"><span>상태</span><span class="sd-val ${sc}">${sl}</span></div>
+      <div class="sd-row"><span>업무</span><span class="sd-val">${a.task}</span></div>
+      <div class="sd-row"><span>위치</span><span class="sd-val">${room}</span></div>`;
+  } else {
+    document.getElementById('sb-detail').innerHTML='<div class="sd-empty">← 캐릭터를 클릭하세요</div>';
+  }
+};
+
+cv.addEventListener('click',e=>{
+  const rc=cv.getBoundingClientRect();
+  const sx=(e.clientX-rc.left)*(W/rc.width),sy=(e.clientY-rc.top)*(H/rc.height);
+  const ts=TILE();
+  let hit=null,best=ts*0.55;
+  for(const a of agents){const d=Math.hypot(sx-a.px,sy-a.py);if(d<best){best=d;hit=a.id;}}
+  selAgent(hit||'');
+});
+
+// ── LOG ─────────────────────────────────────────────
+function addLog(msg){
+  const t=new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'});
+  logs.unshift({t,msg,fr:true});
+  if(logs.length>30)logs.pop();
+  setTimeout(()=>{const l=logs.find(x=>x.msg===msg&&x.fr);if(l)l.fr=false;},4000);
+  renderLog();
+}
+function renderLog(){
+  document.getElementById('loglines').innerHTML=
+    logs.slice(0,15).map(l=>`<div class="log-line${l.fr?' fr':''}">${l.t} ${l.msg}</div>`).join('');
+}
+
+// ── JSON POLLING ─────────────────────────────────────
+async function poll(){
+  try{
+    const r=await fetch('agents.json?_='+Date.now());
+    if(!r.ok)return;
+    const d=await r.json();
+    d.agents.forEach(upd=>{
+      const a=agents.find(x=>x.id===upd.id);
+      if(a){a.status=upd.status;a.task=upd.task;}
+    });
+  }catch(_){}
+}
+poll();setInterval(poll,5000);
+
+// ── MAIN LOOP ─────────────────────────────────────────
+function loop(){
+  frame++;
+  updateAgents();
+  updateClock();
+  ctx.clearRect(0,0,W,H);
+  drawMap();drawFurniture();
+  agents.forEach(drawAgent);
+  buildSidebar();
+  requestAnimationFrame(loop);
+}
+
+addLog('시스템 시작 — 말숙이 팀 출근 완료');
+addLog('강이 → 유튜브 노트 3개 저장 완료');
+addLog('재이 → 수이 테스트 진행 중');
+initPositions();
+loop();
+</script>
+</body>
+</html>
