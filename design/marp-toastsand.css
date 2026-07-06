@@ -191,6 +191,53 @@ section.highlight::after {
   color: rgba(253, 250, 245, 0.6);
 }
 
+/* ── 2컬럼 레이아웃 (텍스트 + 배경 이미지) ─────── */
+section.two-column {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  padding: 60px 48px;
+}
+
+section.two-column > h2:first-child {
+  grid-column: 1;
+}
+
+section.two-column > *:not(h2):not(blockquote):not(hr) {
+  grid-column: 1;
+}
+
+/* ── 가격 강조 스팬 ──────────────────────────────── */
+.price-highlight {
+  font-size: 1.3em;
+  font-weight: 900;
+  color: #FF6B6B;
+}
+
+/* ── 표지 텍스트 오버레이 ────────────────────────── */
+.overlay {
+  position: absolute;
+  bottom: 60px;
+  left: 72px;
+  right: 72px;
+  background: rgba(45, 52, 54, 0.18);
+  border-radius: 16px;
+  padding: 32px 48px;
+  color: #FDFAF5;
+}
+
+.overlay h2 {
+  color: #FDFAF5;
+  border-bottom-color: rgba(253, 250, 245, 0.3);
+  font-size: 36px;
+  margin-bottom: 12px;
+}
+
+.overlay p,
+.overlay strong {
+  color: #FDFAF5;
+}
+
 /* ── 다크 슬라이드 (dark 클래스) ───────────────── */
 section.dark {
   background-color: #2D3436;

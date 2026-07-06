@@ -1,0 +1,93 @@
+/* @theme dark-card */
+/* 다크 배경 + 카드형 비교 레이아웃 + 등장 애니메이션 Marp 테마 */
+
+@import 'default';
+
+section {
+  background: linear-gradient(135deg, #0a0a0f 0%, #0d1117 100%);
+  color: #ffffff;
+  font-family: 'Pretendard', 'Noto Sans KR', -apple-system, sans-serif;
+  padding: 60px 70px;
+}
+
+h1 {
+  font-size: 2.6em;
+  font-weight: 800;
+  color: #ffffff;
+  text-align: center;
+  margin-bottom: 0.2em;
+  animation: fadeInDown 0.6s ease-out;
+}
+
+h2 {
+  font-size: 1.8em;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+h3 {
+  font-size: 1.3em;
+  font-weight: 700;
+}
+
+p, li {
+  color: #d1d5db;
+  font-size: 0.95em;
+}
+
+/* 부제목 (h1 바로 아래 작은 설명줄) */
+h1 + p {
+  text-align: center;
+  color: #9ca3af;
+  font-size: 1em;
+  font-weight: 500;
+  margin-top: -0.3em;
+  animation: fadeIn 0.8s ease-out 0.2s both;
+}
+
+/* 카드형 박스: <div class="card accent-purple">...</div> 식으로 사용 */
+.card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+  padding: 24px;
+  animation: fadeInUp 0.5s ease-out both;
+}
+
+.card.accent-purple { border-color: #a855f7; box-shadow: 0 0 0 1px rgba(168, 85, 247, 0.3); }
+.card.accent-green  { border-color: #22c55e; box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.3); }
+.card.accent-blue   { border-color: #3b82f6; box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.3); }
+
+/* 2단/3단 그리드 */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+
+.grid-2 .card:nth-child(1) { animation-delay: 0.1s; }
+.grid-2 .card:nth-child(2) { animation-delay: 0.25s; }
+.grid-3 .card:nth-child(1) { animation-delay: 0.1s; }
+.grid-3 .card:nth-child(2) { animation-delay: 0.25s; }
+.grid-3 .card:nth-child(3) { animation-delay: 0.4s; }
+
+/* 공통 섹션(카드 아래 하단 박스) */
+.highlight-box {
+  background: rgba(34, 197, 94, 0.08);
+  border: 1px solid rgba(34, 197, 94, 0.25);
+  border-radius: 14px;
+  padding: 18px 24px;
+  text-align: center;
+  margin-top: 20px;
+  animation: fadeInUp 0.5s ease-out 0.5s both;
+}
+
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}

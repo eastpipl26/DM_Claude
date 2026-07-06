@@ -16,9 +16,18 @@
     ],
     "defaultMode": "acceptEdits"
   },
-  "theme": "dark",
-  "skipDangerousModePermissionPrompt": true,
   "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "C:\\Users\\eastp\\AppData\\Local\\Programs\\Python\\Python312\\python.exe \"C:\\Users\\eastp\\.claude\\scripts\\memory_break_check.py\"",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
     "PreToolUse": [
       {
         "matcher": "Agent",
@@ -41,6 +50,33 @@
           }
         ]
       }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"C:\\\\Users\\\\eastp\\\\.claude\\\\scripts\\\\gptaku-update-check.cjs\"",
+            "timeout": 5
+          }
+        ]
+      }
     ]
-  }
+  },
+  "enabledPlugins": {
+    "insane-search@gptaku-plugins": true
+  },
+  "extraKnownMarketplaces": {
+    "gptaku-plugins": {
+      "source": {
+        "source": "git",
+        "url": "https://github.com/fivetaku/gptaku_plugins.git"
+      }
+    }
+  },
+  "skipDangerousModePermissionPrompt": true,
+  "theme": "dark",
+  "agentPushNotifEnabled": true,
+  "inputNeededNotifEnabled": true
 }
