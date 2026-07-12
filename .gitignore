@@ -22,3 +22,14 @@ shell-snapshots/
 .last-update-result.json
 .gptaku-update/
 scripts/youtube_cookies.txt
+
+# 런타임·머신 고유·가상환경 (푸시 금지)
+__pycache__/
+tasks/
+.claude.json
+.last-cleanup
+.delegation-gate-state.tmp
+**/.venv/
+gate_state/
+scripts/re-pipeline/weekly_policy_log.txt
+skills/video-use/

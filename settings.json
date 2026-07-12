@@ -38,6 +38,16 @@
             "timeout": 5
           }
         ]
+      },
+      {
+        "matcher": "Write|Edit|MultiEdit|NotebookEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "C:\\Users\\eastp\\AppData\\Local\\Programs\\Python\\Python312\\python.exe \"C:\\Users\\eastp\\.claude\\scripts\\delegation_gate.py\"",
+            "timeout": 5
+          }
+        ]
       }
     ],
     "Stop": [
@@ -77,6 +87,6 @@
   },
   "skipDangerousModePermissionPrompt": true,
   "theme": "dark",
-  "agentPushNotifEnabled": true,
-  "inputNeededNotifEnabled": true
+  "inputNeededNotifEnabled": true,
+  "agentPushNotifEnabled": true
 }

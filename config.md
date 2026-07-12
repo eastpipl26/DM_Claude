@@ -18,6 +18,9 @@
 | `areas` | `{vault}\30_Areas` |
 | `blog_notes` | `{vault}\30_Areas\블로그` |
 | `real_estate` | `{vault}\30_Areas\부동산` |
+| `re_data` | `{vault}\30_Areas\부동산\데이터` |
+| `re_scripts` | `{claude_home}\scripts\re-pipeline` |
+| `re_tracker` | `{real_estate}\트래커` |
 | `resources` | `{vault}\40_Resources` |
 | `system` | `{vault}\90_System` |
 | `daily_notes` | `{vault}\90_System\DailyNotes` |
@@ -64,3 +67,26 @@
 |---|---|
 | `meeting_notes` | `{sk_hynix}\회의록` |
 | `issues` | `{sk_hynix}\이슈` |
+| `sk_work` | `{sk_hynix}\업무` |
+| `work_scripts` | `{claude_home}\scripts\work-dashboard` |
+
+---
+
+## NoRender (건축 렌더링 외주 스튜디오)
+
+| 변수 | 값 |
+|---|---|
+| `norender_root` | `E:\NoRender_Workspace` |
+| `norender_scripts` | `{norender_root}\00_Automations_&_Scripts` |
+| `norender_assets` | `{norender_root}\01_Library_&_Assets` |
+| `norender_templates` | `{norender_root}\02_Templates` |
+| `norender_projects` | `{norender_root}\03_Projects` |
+| `norender_plan` | `{norender_root}\00_NoRender_Master_Plan.md` |
+| `norender_branding` | `E:\NoRender_Branding` |
+| `norender_logo_source` | `{norender_branding}\01_Logo_Source` |
+| `norender_brand_guide` | `{norender_branding}\02_Brand_Guide` |
+| `norender_brand_sheet` | `{norender_branding}\03_Brand_Sheet` |
+| `norender_marketing` | `{norender_branding}\04_Marketing_Assets` |
+| `norender_website` | `E:\NoRender_Website` |
+| `norender_website_data` | `{norender_website}\data\projects.json` |
+| `norender_website_images` | `{norender_website}\public\projects` |
