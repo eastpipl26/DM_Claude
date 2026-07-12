@@ -1,0 +1,24 @@
+# Memory Index
+
+- [Config Variables Rule](feedback_config_variables.md) — 경로·설정값은 config.md 변수로, 에이전트·스킬에 하드코딩 금지
+- [가족 구성](user_family.md) — 딸 서유하 2026.04.30 출생, 배우자 김지연
+- [대출상품 수치 확인 규칙](feedback_loan_product_facts.md) — 만기·한도 등 실존 옵션만 사용, 매번 검색으로 확정
+- [말숙이팀 고도화 로드맵](project_team_roadmap.md) — 4트랙 순차 로드맵(모바일·팀정비·수익화), 2026-07-04 착수
+- [모바일 운용(Remote Control)](project_mobile_remote_control.md) — 서버 PC 상시가동 + /rc로 폰 조작
+- [부동산 매수 진행](project_realestate_purchase.md) — 신특례로 송도 매물 매수, 자격 충족, 기한 2028-04-30
+- [매매시그널 파이프라인](project_re_signal_pipeline.md) — 국토부 API 수집·지표계산·기준서 v0.2, 수집은 메인 세션에서만, 사이클 2는 K-apt 신청부터
+- [애드센스 3-필러 블로그](project_adsense_blog.md) — 블로그스팟, 한국어→영어, 건축법규·엑셀·AI도구 3필러, 2026-07 착수
+- [NoRender 렌더링 외주](project_norender_studio.md) — 라이노-블렌더 LiveLink, E:\NoRender_Workspace, 마스터 플랜 기준 진행
+- [애드센스 저자 익명화](feedback_adsense_author_anonymize.md) — 저자 소개는 회사명 대신 "설계사·건설사 실무 경험"으로
+- [애드센스 슬라이드 표준](feedback_adsense_slide_standards.md) — 흰 표+어두운 글씨·div표·색통일·간격, 새 글에 미리 반영
+- [애드센스 원고 발행메타](feedback_adsense_post_footer_meta.md) — 원고 맨 아래 라벨·검색설명 블록 매번 자동 포함
+- [블로거 API 자동발행](reference_blogger_api_automation.md) — publish_draft.py로 원고.md→임시저장 자동화, 이미지·검색설명은 API 한계로 수동
+- [Paperclip 컨트롤플레인](reference_paperclip.md) — C:\paperclip :3100 설치됨, 아직 미연동
+- [위임 폴백 규칙](feedback_delegation_fallback.md) — 담당 에이전트 spawn 불가 시 말숙이가 직접 처리
+- [한글 경로 인코딩](reference_korean_path_encoding.md) — Python raw Windows 경로 + iCloud 한글파일명 NFC/NFD(Read/PS 실패→Python listdir 매칭)
+- [Google Docs 내보내기](reference_gdocs_export.md) — base64 임베드 HTML로 Drive create_file
+- [카카오 토큰 만료](reference_kakao_token_expiry.md) — kakao-send.ps1 401 시 재인증 필요, 자동갱신 스크립트 없음
+- [에이전트 모델 승격 적용](project_agent_model_tier_applied.md) — 2026-07-06 판단직 10명 haiku→sonnet, 강이 품질문제 계기
+- [대시보드 낡음](reference_dashboard_stale.md) — dashboard/agents.json 6/27 정지, 실시간 상태 확인용 아님
+- [위임 강제 게이트](reference_delegation_gate.md) — delegation_gate.py, 말숙이 vault 직접수정 턴당 2개 제한, 다음 세션부터 적용
+- [3대 주요 업 (본업 복귀)](project_work_priorities.md) — SK하이닉스 설계 본업 + NoRender 부업 + 건축사시험 9/12, ~9월 중순까지 이 축 중심
