@@ -22,3 +22,16 @@
 - [대시보드 낡음](reference_dashboard_stale.md) — dashboard/agents.json 6/27 정지, 실시간 상태 확인용 아님
 - [위임 강제 게이트](reference_delegation_gate.md) — delegation_gate.py, 말숙이 vault 직접수정 턴당 2개 제한, 다음 세션부터 적용
 - [3대 주요 업 (본업 복귀)](project_work_priorities.md) — SK하이닉스 설계 본업 + NoRender 부업 + 건축사시험 9/12, ~9월 중순까지 이 축 중심
+- [vault 경로 단일화](reference_vault_path_stale.md) — 진짜 vault는 iCloud~md~obsidian\Dongmin 하나, iCloudDrive\Dongmin_구볼트보관은 쓰기 금지, 데일리 표준 10_Daily\YYYY\YYYY-MM\YYMMDD 데일리노트
+- [영어 용어 표기](feedback_english_terms_no_transliteration.md) — 영어 기원 단어는 한글 음차 대신 영어 원어로 표기(예: 리웍→Rework)
+- [업무목록 문체·확인형식](feedback_work_list_format.md) — 메모는 조사 최소화 개조식, 업무 확인 요청엔 표로 응답
+- [일정-캘린더 동시등록](feedback_calendar_sync_always.md) — 업무목록·인허가 등 날짜 있는 일정은 항상 구글캘린더에도 등록
+- [구글캘린더 ID 목록](reference_google_calendar_ids.md) — SKEP_Y1P1/Y1P4/Y2P1 등 프로젝트별 calendarId
+- [모호한 항목 확인 후 변경](feedback_confirm_ambiguous_item.md) — 업무목록 등에서 대상 불확실하면 추측 대신 먼저 확인
+- [담당자 기본값](feedback_default_owner_self.md) — 업무목록 담당자 미지정 시 기본값 서동민(본인)
+- [FAB 설계백서](project_fab_design_whitebook.md) — 40_Resources\FAB기술에 주제별 파일로 축적, MOC는 나중에 일괄생성
+- [마감일 기본값](feedback_default_duedate_nextday.md) — 업무목록 마감일 미지정 시 기본값 등록일 다음날
+- [지속관리 상태값](feedback_status_continuous_management.md) — 완료없이 계속 버전관리해야 하는 항목은 🔵지속관리로 표기
+- [노션 미러링 계획](project_notion_mirror.md) — 회사PC용 Obsidian→Notion DB 미러, 구축완료(71건+), Notion 동기화는 요청시 일괄
+- [노션 동기화 배치 처리](feedback_notion_sync_batched.md) — Notion은 즉시반영 아닌 요청시 일괄 반영 (rate limit 이슈로 정정)
+- [회신대기 상태값](feedback_status_waiting_on_reply.md) — 우리쪽 액션 끝나고 상대 회신만 기다리면 🟡진행 아닌 ⏳대기로 표기

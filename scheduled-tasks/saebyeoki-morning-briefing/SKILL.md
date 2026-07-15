@@ -9,34 +9,40 @@ description: 새벽이 아침 브리핑 — 뉴스·캘린더·날씨 수집 후
 ## 시작 시 필수 작업
 
 **모든 작업 시작 전** `C:\Users\eastp\.claude\config.md`를 Read하여 경로·설정값을 확인한다.
-`vault`, `daily_notes` 변수를 읽어 경로로 사용한다.
+`vault`, `daily_notes`, `daily_note_file` 변수를 읽어 경로로 사용한다.
+
+**⚠️ 경로 가드**: config.md의 vault 경로가 비어 보이거나 폴더가 없어 보여도,
+**절대 다른 경로를 vault로 간주하지 않는다** (iCloud 미다운로드 상태일 수 있음).
+특히 `C:\Users\eastp\iCloudDrive\Dongmin*`(구볼트 보관본)에는 절대 쓰지 않는다.
+경로 접근이 안 되면 작업을 중단하고 그 사실만 보고한다.
 
 ## 기본 정보
 - vault 경로: config.md의 `vault` 참조
-- 오늘 데일리노트 경로: `{daily_notes}\{오늘날짜 YYYY-MM-DD}.md`
+- 오늘 데일리노트 경로: config.md의 `daily_note_file` 패턴 — `{daily_notes}\YYYY\YYYY-MM\YYMMDD 데일리노트.md` (예: `10_Daily\2026\2026-07\260713 데일리노트.md`)
 
 ---
 
 ## 1단계: 오늘 데일리노트 확인
 
-오늘 날짜의 데일리노트를 Read 툴로 읽는다.
-- 파일 없으면 아래 템플릿으로 생성:
+오늘 날짜의 데일리노트를 Read 툴로 읽는다. 연도·월 폴더가 없으면 만든다.
+- 파일 없으면 아래 템플릿(Obsidian 표준 데일리 템플릿과 동일 구조)으로 생성:
   ```
   ---
-  date: YYYY-MM-DD
-  type: 데일리
-  tags: [데일리]
+  created: YYYY-MM-DD
+  type: daily
+  tags: [daily]
   ---
+  # YYMMDD 데일리노트
 
-  ## 오늘 할 일
-
+  ## 🎯 오늘 할 일
   - [ ] 
+  ## 🏢 업무 기록
 
-  ## 회의
+  ## 💡 아이디어
 
-  ## 메모
+  ## 📝 일상 기록
 
-  ## 이슈 현황
+  ## 🔗 오늘 만든/연결한 노트
   ```
 - 이미 `> [!abstract]- 🌅 아침 브리핑` 섹션이 있으면 중복 방지를 위해 즉시 종료.
 

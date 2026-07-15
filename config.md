@@ -23,7 +23,8 @@
 | `re_tracker` | `{real_estate}\트래커` |
 | `resources` | `{vault}\40_Resources` |
 | `system` | `{vault}\90_System` |
-| `daily_notes` | `{vault}\90_System\DailyNotes` |
+| `daily_notes` | `{vault}\10_Daily` |
+| `daily_note_file` | `{daily_notes}\{YYYY}\{YYYY-MM}\{YYMMDD} 데일리노트.md` (예: `10_Daily\2026\2026-07\260713 데일리노트.md`) |
 | `scripts` | `{claude_home}\scripts` |
 | `content_script` | `{vault}\30_Areas\콘텐츠\대본` |
 | `content_ppt` | `{vault}\30_Areas\콘텐츠\PPT` |
