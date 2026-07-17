@@ -8,7 +8,7 @@
 - [부동산 매수 진행](project_realestate_purchase.md) — 신특례로 송도 매물 매수, 자격 충족, 기한 2028-04-30
 - [매매시그널 파이프라인](project_re_signal_pipeline.md) — 국토부 API 수집·지표계산·기준서 v0.2, 수집은 메인 세션에서만, 사이클 2는 K-apt 신청부터
 - [애드센스 3-필러 블로그](project_adsense_blog.md) — 블로그스팟, 한국어→영어, 건축법규·엑셀·AI도구 3필러, 2026-07 착수
-- [NoRender 렌더링 외주](project_norender_studio.md) — 라이노-블렌더 LiveLink, E:\NoRender_Workspace, 마스터 플랜 기준 진행
+- [NoRender 렌더링 외주](project_norender_studio.md) — 라이노-블렌더 LiveLink, 자산 M:\NoRender_Workspace(구 E:), 문서 원본은 vault 20_Projects\NoRender
 - [애드센스 저자 익명화](feedback_adsense_author_anonymize.md) — 저자 소개는 회사명 대신 "설계사·건설사 실무 경험"으로
 - [애드센스 슬라이드 표준](feedback_adsense_slide_standards.md) — 흰 표+어두운 글씨·div표·색통일·간격, 새 글에 미리 반영
 - [애드센스 원고 발행메타](feedback_adsense_post_footer_meta.md) — 원고 맨 아래 라벨·검색설명 블록 매번 자동 포함
@@ -35,3 +35,6 @@
 - [노션 미러링 계획](project_notion_mirror.md) — 회사PC용 Obsidian→Notion DB 미러, 구축완료(71건+), Notion 동기화는 요청시 일괄
 - [노션 동기화 배치 처리](feedback_notion_sync_batched.md) — Notion은 즉시반영 아닌 요청시 일괄 반영 (rate limit 이슈로 정정)
 - [회신대기 상태값](feedback_status_waiting_on_reply.md) — 우리쪽 액션 끝나고 상대 회신만 기다리면 🟡진행 아닌 ⏳대기로 표기
+- [오늘할일→데일리체크리스트](feedback_today_tasks_to_daily_checklist.md) — "오늘 처리해야할 일" 질문엔 항상 데일리노트 체크리스트로도 반영
+- [주간리뷰·결정태그](feedback_weekly_review_decision_tag.md) — 월 08:00 주간리뷰 정기태스크(weekly-work-review) + 의사결정은 [결정] 태그, 대기항목 회신기한 +7일 규칙 포함
+- [데일리노트 폴더 중복 정리](reference_daily_notes_folder_cleanup.md) — 10_Daily\2026(1) 충돌폴더 삭제·6월노트 이관 완료(2026-07-15), 표준경로는 10_Daily\YYYY\YYYY-MM

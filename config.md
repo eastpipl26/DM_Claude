@@ -77,17 +77,19 @@
 
 | 변수 | 값 |
 |---|---|
-| `norender_root` | `E:\NoRender_Workspace` |
+| `norender_root` | `M:\NoRender_Workspace` (2026-07-15 E:→M: 드라이브 문자 고정) |
+| `norender_docs` | `C:\Users\eastp\iCloudDrive\iCloud~md~obsidian\Dongmin\20_Projects\NoRender` — 문서(마스터플랜·Brand Book) 원본은 vault. M:은 자산(blend·3dm·렌더) 전용 |
 | `norender_scripts` | `{norender_root}\00_Automations_&_Scripts` |
 | `norender_assets` | `{norender_root}\01_Library_&_Assets` |
 | `norender_templates` | `{norender_root}\02_Templates` |
 | `norender_projects` | `{norender_root}\03_Projects` |
-| `norender_plan` | `{norender_root}\00_NoRender_Master_Plan.md` |
-| `norender_branding` | `E:\NoRender_Branding` |
+| `norender_plan` | `{norender_docs}\00_NoRender_Master_Plan.md` |
+| `norender_brand_book` | `{norender_docs}\NoRender_Brand_Book.md` |
+| `norender_branding` | `M:\NoRender_Branding` |
 | `norender_logo_source` | `{norender_branding}\01_Logo_Source` |
 | `norender_brand_guide` | `{norender_branding}\02_Brand_Guide` |
 | `norender_brand_sheet` | `{norender_branding}\03_Brand_Sheet` |
 | `norender_marketing` | `{norender_branding}\04_Marketing_Assets` |
-| `norender_website` | `E:\NoRender_Website` |
+| `norender_website` | `M:\NoRender_Website` |
 | `norender_website_data` | `{norender_website}\data\projects.json` |
 | `norender_website_images` | `{norender_website}\public\projects` |

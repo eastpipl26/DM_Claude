@@ -36,3 +36,4 @@ tasks/
 gate_state/
 scripts/re-pipeline/weekly_policy_log.txt
 skills/video-use/
+telemetry/
