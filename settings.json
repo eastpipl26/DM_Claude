@@ -75,13 +75,20 @@
     ]
   },
   "enabledPlugins": {
-    "insane-search@gptaku-plugins": true
+    "insane-search@gptaku-plugins": true,
+    "caveman@caveman": true
   },
   "extraKnownMarketplaces": {
     "gptaku-plugins": {
       "source": {
         "source": "git",
         "url": "https://github.com/fivetaku/gptaku_plugins.git"
+      }
+    },
+    "caveman": {
+      "source": {
+        "source": "github",
+        "repo": "JuliusBrussee/caveman"
       }
     }
   },
