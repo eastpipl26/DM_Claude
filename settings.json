@@ -76,7 +76,8 @@
   },
   "enabledPlugins": {
     "insane-search@gptaku-plugins": true,
-    "telegram@claude-plugins-official": true
+    "telegram@claude-plugins-official": true,
+    "caveman@caveman": true
   },
   "extraKnownMarketplaces": {
     "gptaku-plugins": {
@@ -89,6 +90,12 @@
       "source": {
         "source": "github",
         "repo": "anthropics/claude-plugins-official"
+      }
+    },
+    "caveman": {
+      "source": {
+        "source": "github",
+        "repo": "JuliusBrussee/caveman"
       }
     }
   },
