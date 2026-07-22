@@ -23,7 +23,8 @@
 | `re_tracker` | `{real_estate}\트래커` |
 | `resources` | `{vault}\40_Resources` |
 | `system` | `{vault}\90_System` |
-| `daily_notes` | `{vault}\90_System\DailyNotes` |
+| `daily_notes` | `{vault}\10_Daily` |
+| `daily_note_file` | `{daily_notes}\{YYYY}\{YYYY-MM}\{YYMMDD} 데일리노트.md` (예: `10_Daily\2026\2026-07\260720 데일리노트.md`) |
 | `scripts` | `{claude_home}\scripts` |
 | `content_script` | `{vault}\30_Areas\콘텐츠\대본` |
 | `content_ppt` | `{vault}\30_Areas\콘텐츠\PPT` |
@@ -68,7 +69,18 @@
 | `meeting_notes` | `{sk_hynix}\회의록` |
 | `issues` | `{sk_hynix}\이슈` |
 | `sk_work` | `{sk_hynix}\업무` |
-| `work_scripts` | `{claude_home}\scripts\work-dashboard` |
+
+---
+
+## 구글캘린더 (공사일정·업무·인허가 동기화)
+
+| phase/구분 | calendarId |
+|---|---|
+| Y1P1 | `7935853b9f6b41a7dceeb9f5828e083c497426d1ce1f65ee50531284830718a6@group.calendar.google.com` (SKEP_Y1P1) |
+| Y1P4 | `ae686b88a0a7738600a8d60070d544fae76e0a45f925e12e5e4c2f86e6b55b52@group.calendar.google.com` (SKEP_Y1P4) |
+| Y2P1 | `12a559163bdc64cc172ac0538f5d81805ff6bc5119a9ccaa7cd1619f41f23ba6@group.calendar.google.com` (SKEP_Y2P1) |
+| 공통 | `02f9a3d9495a079554edbd48b5a5fe42a4ad200e4f2b4db8a89deef607b42120@group.calendar.google.com` (SKEP_Repeat) |
+| 개인 | `8fa43a9c9fd4880c02472abf34eebb0845f47194728d9f1611df2d76e10e2e8e@group.calendar.google.com` (DM_자기개발) |
 
 ---
 

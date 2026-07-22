@@ -13,7 +13,7 @@ description: 새벽이 아침 브리핑 — 뉴스·캘린더·날씨 수집 후
 
 ## 기본 정보
 - vault 경로: config.md의 `vault` 참조
-- 오늘 데일리노트 경로: `{daily_notes}\{오늘날짜 YYYY-MM-DD}.md`
+- 오늘 데일리노트 경로: config.md의 `daily_note_file` 패턴 — `{daily_notes}\{YYYY}\{YYYY-MM}\{YYMMDD} 데일리노트.md` (예: `10_Daily\2026\2026-07\260720 데일리노트.md`)
 
 ---
 
