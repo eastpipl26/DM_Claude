@@ -21,6 +21,7 @@
 | `re_data` | `{vault}\30_Areas\부동산\데이터` |
 | `re_scripts` | `{claude_home}\scripts\re-pipeline` |
 | `re_tracker` | `{real_estate}\트래커` |
+| `personal_finance` | `{vault}\30_Areas\재무` |
 | `resources` | `{vault}\40_Resources` |
 | `system` | `{vault}\90_System` |
 | `daily_notes` | `{vault}\10_Daily` |
