@@ -39,4 +39,5 @@ skills/video-use/
 plans/
 telemetry/
 scripts/out*.txt
-.claude/
+.claude/*
+!.claude/agents/
