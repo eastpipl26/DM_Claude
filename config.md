@@ -1,38 +1,51 @@
-# 말숙이 팀 전역 설정 (config.md)
+# 전역 설정 (config.md)
 
-> 모든 직원(에이전트)·스킬은 작업 시작 시 이 파일을 먼저 읽고 아래 값을 사용한다.
+> 모든 에이전트·스킬은 작업 시작 시 이 파일을 먼저 읽고 아래 값을 사용한다.
 > 경로·설정 변경 시 **이 파일만** 수정하면 전체에 반영된다.
+> 다른 파일에 경로 하드코딩 금지 — 반드시 `{변수}` 참조.
 
 ---
 
-## 경로
+## 경로 (v2 목표 체계)
+
+> vault PARA 재편(Phase 2, `{claude_home}\docs\v2-재구축-가이드.md`) 완료 전까지
+> `legacy_*` 변수가 실제 위치인 항목이 있다. 이사 완료 시 legacy 변수를 삭제한다.
 
 | 변수 | 값 |
 |---|---|
 | `vault` | `C:\Users\eastp\iCloudDrive\iCloud~md~obsidian\Dongmin` |
 | `claude_home` | `C:\Users\eastp\.claude` |
-| `inbox` | `{vault}\00_Inbox` |
-| `personal_records` | `{vault}\01-1_개인기록` |
-| `daily_notes` | `{personal_records}\1_데일리` |
-| `daily_note_file` | `{daily_notes}\{YYYY}\{YYYY-MM}\{YYMMDD} 데일리노트.md` (예: `01-1_개인기록\1_데일리\2026\2026-07\260720 데일리노트.md`) |
-| `personal_study` | `{vault}\01-2_개인공부` |
-| `personal_assets` | `{vault}\01-3_개인자산` |
-| `real_estate` | `{personal_assets}\2_부동산` |
-| `re_data` | `{real_estate}\1_데이터` |
-| `re_scripts` | `{claude_home}\scripts\re-pipeline` |
-| `re_tracker` | `{real_estate}\3_트래커` |
-| `personal_finance` | `{personal_assets}\1_재무` |
-| `work` | `{vault}\02_업무` |
-| `sk_hynix` | `{vault}\20_Projects\SK하이닉스_용인(1)` (구 `{work}\1_SK하이닉스`는 legacy, 회의록/이슈/업무 폴더는 PARA 재편 후 이쪽으로 이전됨) |
-| `career_docs` | `{work}\0_이력사항` |
-| `side_business` | `{vault}\03_부업` |
-| `blog_notes` | `{side_business}\1_콘텐츠제작\2_블로그` |
-| `blog_attachments` | `{blog_notes}\attachments` |
-| `content_script` | `{side_business}\1_콘텐츠제작\3_대본` |
-| `content_ppt` | `{side_business}\1_콘텐츠제작\4_PPT` |
-| `resources` | `{vault}\09_데이터` |
-| `system` | `{vault}\90_System` |
+| `knowledge` | `{claude_home}\knowledge` |
 | `scripts` | `{claude_home}\scripts` |
+| `inbox` | `{vault}\00_Inbox` |
+| `projects` | `{vault}\20_Projects` |
+| `sk` | `{projects}\SK하이닉스_용인(1)` (Phase 2에서 "(1)" 제거 rename 예정) |
+| `meeting_notes` | `{sk}\1_회의록` |
+| `issues` | `{sk}\2_이슈` |
+| `sk_work` | `{sk}\3_업무` |
+| `sk_reports` | `{sk}\4_보고서` |
+| `blog` | `{projects}\애드센스_블로그` |
+| `areas` | `{vault}\30_Areas` |
+| `daily` | `{areas}\1_데일리` — **legacy(현재 실위치)**: `{vault}\01-1_개인기록\1_데일리` |
+| `daily_note_file` | `{daily}\{YYYY}\{YYYY-MM}\{YYMMDD} 데일리노트.md` |
+| `health` | `{areas}\2_건강` — legacy: `{vault}\01-1_개인기록\3_운동기록` |
+| `finance` | `{areas}\3_재무` — legacy: `{vault}\01-3_개인자산\1_재무` |
+| `realty` | `{areas}\4_부동산` — legacy: `{vault}\01-3_개인자산\2_부동산` |
+| `career` | `{areas}\5_커리어` — legacy: `{vault}\02_업무\0_이력사항`, `{areas}\커리어_AI전환` |
+| `content` | `{areas}\6_콘텐츠제작` — legacy: `{vault}\03_부업\1_콘텐츠제작` |
+| `blog_notes` | `{content}\2_블로그` — legacy: `{vault}\03_부업\1_콘텐츠제작\2_블로그` |
+| `content_script` | `{content}\3_대본` — legacy: `{vault}\03_부업\1_콘텐츠제작\3_대본` |
+| `content_ppt` | `{content}\4_PPT` — legacy: `{vault}\03_부업\1_콘텐츠제작\4_PPT` |
+| `resources` | `{vault}\40_Resources` — legacy(대부분 실위치): `{vault}\09_데이터` |
+| `fab_docs` | `{resources}\FAB기술` — legacy: `{vault}\09_데이터\FAB기술` |
+| `study` | `{resources}\학습노트` — legacy: `{vault}\01-2_개인공부`, `{vault}\09_데이터` 대주제 폴더들 |
+| `system` | `{vault}\90_System` |
+| `archive` | `{vault}\99_Archive` |
+| `re_data` | `{realty}\1_데이터` |
+| `re_tracker` | `{realty}\3_트래커` |
+| `re_scripts` | `{scripts}\re-pipeline` |
+
+> **legacy 규칙**: 대상 폴더가 새 경로에 아직 없으면 legacy 경로를 사용하고, 이사 여부가 불확실하면 둘 다 Glob으로 확인 후 실제 존재하는 쪽을 쓴다.
 
 ---
 
@@ -41,6 +54,8 @@
 | 변수 | 값 |
 |---|---|
 | `default_model` | `sonnet` |
+
+에이전트별 모델은 각 md frontmatter `model:` 값을 따른다 (단순 정리형 haiku, 판단형 sonnet).
 
 ---
 
@@ -55,25 +70,18 @@
 
 ---
 
-## 직원-스킬 매핑
+## 에이전트-스킬 매핑
 
-| 스킬 | 담당 직원 |
+| 스킬/작업 | 담당 |
 |---|---|
-| `/블로그-작성` | 문이 |
-| `/학습-유튜브` | 강이 |
-| `/콘텐츠-PPT` | 줄이(대본) → 채린이(테마) → 판이(PPT) |
-| Obsidian 저장·정리 | 옥순이 |
-| 아침 브리핑 | 새벽이 |
-
----
-
-## 회사 프로젝트 경로
-
-| 변수 | 값 |
-|---|---|
-| `meeting_notes` | `{sk_hynix}\1_회의록` |
-| `issues` | `{sk_hynix}\2_이슈` |
-| `sk_work` | `{sk_hynix}\3_업무` |
+| `/블로그-작성` | piper |
+| `/부동산-분석` | terra |
+| `/fab-panel`, FAB 설계 검토 | archie |
+| `/학습-유튜브` | general-purpose 서브에이전트 (파이프라인은 스킬에 내장) |
+| `/콘텐츠-PPT` | general-purpose 서브에이전트 (파이프라인은 스킬에 내장) |
+| 사실·수치 검증 | vera |
+| 재무 / 건강 / 이력서 | penny / vita / hunter |
+| Obsidian 저장·정리, 아침 브리핑 | 메인 세션 직접 또는 general-purpose 서브에이전트 |
 
 ---
 
@@ -94,7 +102,7 @@
 | 변수 | 값 |
 |---|---|
 | `norender_root` | `M:\NoRender_Workspace` (2026-07-15 E:→M: 드라이브 문자 고정) |
-| `norender_docs` | `C:\Users\eastp\iCloudDrive\iCloud~md~obsidian\Dongmin\20_Projects\NoRender` — 문서(마스터플랜·Brand Book) 원본은 vault. M:은 자산(blend·3dm·렌더) 전용 |
+| `norender_docs` | `{projects}\NoRender` — 문서(마스터플랜·Brand Book) 원본은 vault. M:은 자산(blend·3dm·렌더) 전용 |
 | `norender_scripts` | `{norender_root}\00_Automations_&_Scripts` |
 | `norender_assets` | `{norender_root}\01_Library_&_Assets` |
 | `norender_templates` | `{norender_root}\02_Templates` |

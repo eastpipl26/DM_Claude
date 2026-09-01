@@ -41,3 +41,5 @@ telemetry/
 scripts/out*.txt
 .claude/*
 !.claude/agents/
+
+.caveman-active

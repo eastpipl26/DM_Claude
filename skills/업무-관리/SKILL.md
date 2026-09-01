@@ -22,7 +22,7 @@ SK하이닉스 본업 업무 관리. **개별 노트(items) + Obsidian Bases** �
 
 ---
 
-## 데이터 위치 (config.md `sk_work` = `{sk_hynix}\업무`)
+## 데이터 위치 (config.md `sk_work` = `{sk}\3_업무`)
 
 - `items\` — 업무 노트 폴더. 파일명: `{3자리ID}_{phase}_{키워드}.md` (예: `073_Y1P1_CR코어_EV배기_벽체오프닝_추가검토.md`)
 - `인허가_items\` — 인허가 건 노트 폴더. 같은 규칙.
