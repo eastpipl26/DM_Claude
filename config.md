@@ -23,7 +23,7 @@
 | `re_tracker` | `{real_estate}\3_트래커` |
 | `personal_finance` | `{personal_assets}\1_재무` |
 | `work` | `{vault}\02_업무` |
-| `sk_hynix` | `{work}\1_SK하이닉스` |
+| `sk_hynix` | `{vault}\20_Projects\SK하이닉스_용인(1)` (구 `{work}\1_SK하이닉스`는 legacy, 회의록/이슈/업무 폴더는 PARA 재편 후 이쪽으로 이전됨) |
 | `career_docs` | `{work}\0_이력사항` |
 | `side_business` | `{vault}\03_부업` |
 | `blog_notes` | `{side_business}\1_콘텐츠제작\2_블로그` |
