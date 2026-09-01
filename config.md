@@ -11,24 +11,28 @@
 |---|---|
 | `vault` | `C:\Users\eastp\iCloudDrive\iCloud~md~obsidian\Dongmin` |
 | `claude_home` | `C:\Users\eastp\.claude` |
-| `blog_attachments` | `{vault}\90_System\Attachments\블로그` |
 | `inbox` | `{vault}\00_Inbox` |
-| `projects` | `{vault}\20_Projects` |
-| `sk_hynix` | `{vault}\20_Projects\SK하이닉스_용인` |
-| `areas` | `{vault}\30_Areas` |
-| `blog_notes` | `{vault}\30_Areas\블로그` |
-| `real_estate` | `{vault}\30_Areas\부동산` |
-| `re_data` | `{vault}\30_Areas\부동산\데이터` |
+| `personal_records` | `{vault}\01-1_개인기록` |
+| `daily_notes` | `{personal_records}\1_데일리` |
+| `daily_note_file` | `{daily_notes}\{YYYY}\{YYYY-MM}\{YYMMDD} 데일리노트.md` (예: `01-1_개인기록\1_데일리\2026\2026-07\260720 데일리노트.md`) |
+| `personal_study` | `{vault}\01-2_개인공부` |
+| `personal_assets` | `{vault}\01-3_개인자산` |
+| `real_estate` | `{personal_assets}\2_부동산` |
+| `re_data` | `{real_estate}\1_데이터` |
 | `re_scripts` | `{claude_home}\scripts\re-pipeline` |
-| `re_tracker` | `{real_estate}\트래커` |
-| `personal_finance` | `{vault}\30_Areas\재무` |
-| `resources` | `{vault}\40_Resources` |
+| `re_tracker` | `{real_estate}\3_트래커` |
+| `personal_finance` | `{personal_assets}\1_재무` |
+| `work` | `{vault}\02_업무` |
+| `sk_hynix` | `{work}\1_SK하이닉스` |
+| `career_docs` | `{work}\0_이력사항` |
+| `side_business` | `{vault}\03_부업` |
+| `blog_notes` | `{side_business}\1_콘텐츠제작\2_블로그` |
+| `blog_attachments` | `{blog_notes}\attachments` |
+| `content_script` | `{side_business}\1_콘텐츠제작\3_대본` |
+| `content_ppt` | `{side_business}\1_콘텐츠제작\4_PPT` |
+| `resources` | `{vault}\09_데이터` |
 | `system` | `{vault}\90_System` |
-| `daily_notes` | `{vault}\10_Daily` |
-| `daily_note_file` | `{daily_notes}\{YYYY}\{YYYY-MM}\{YYMMDD} 데일리노트.md` (예: `10_Daily\2026\2026-07\260720 데일리노트.md`) |
 | `scripts` | `{claude_home}\scripts` |
-| `content_script` | `{vault}\30_Areas\콘텐츠\대본` |
-| `content_ppt` | `{vault}\30_Areas\콘텐츠\PPT` |
 
 ---
 
@@ -67,9 +71,9 @@
 
 | 변수 | 값 |
 |---|---|
-| `meeting_notes` | `{sk_hynix}\회의록` |
-| `issues` | `{sk_hynix}\이슈` |
-| `sk_work` | `{sk_hynix}\업무` |
+| `meeting_notes` | `{sk_hynix}\1_회의록` |
+| `issues` | `{sk_hynix}\2_이슈` |
+| `sk_work` | `{sk_hynix}\3_업무` |
 
 ---
 

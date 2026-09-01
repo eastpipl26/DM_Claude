@@ -14,7 +14,7 @@
       "TodoWrite(*)",
       "mcp__claude_ai_Google_Drive__*"
     ],
-    "defaultMode": "acceptEdits"
+    "defaultMode": "auto"
   },
   "hooks": {
     "UserPromptSubmit": [

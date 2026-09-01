@@ -43,7 +43,7 @@
 
 > 구 `DM_Secretary` 폴더는 2026-07-12 이곳으로 통합됨 (기록: `docs\legacy-dm-secretary\`).
 
-- 회의록·이슈 저장 경로: `Dongmin\20_Projects\SK하이닉스_용인\회의록\` / `이슈\`
+- 회의록·이슈 저장 경로: `Dongmin\20_Projects\SK하이닉스_용인(1)\1_회의록\` / `2_이슈\`
 - 파일명 형식: `YYMMDD_phase_building_키워드.md`
 - 스킬(meeting-notes, issue-register)은 Dongmin vault로 자동 저장되도록 설정돼 있음.
 
